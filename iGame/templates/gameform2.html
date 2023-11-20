@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% import "bootstrap5/form.html" as wtf %}
+
+{% block content %}
+    {% include 'nav.html' %}
+    {{ super() }}
+{% endblock %}
+{% block page_content %}
+    <div class="container-md p-3 rounded-3" style="color:#F7E9AD;background-color:#3B3B3B;border-style:dotted;outline:dashed #F7726F;">
+    <h1 class="display-4" style="font-family:VT323;color:#A8F788;">Welcome to iGame!</h1>
+        <p class="lead" style="color:#F7E9AD;"><em>Select the game and console you play most. Search again if these aren't your favorites.</em></p>
+
+
+        {% if form.errors %}
+            <p>
+                        {% for error in form.errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+            </p>
+        {% endif %}
+                <form id="GameForm" action="/gameForm2" method="POST" novalidate>
+                    {{ form.csrf_token }}
+                    <div class="row align-items-center">
+                        <div class="col-md-5 d-flex flex-wrap justify-content-center text-center">
+                            <div class="form-group mb-3">
+                                <div class="d-flex flex-column">
+                                {{ form.game1sel(class="form-control") }}
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                {{ form.game2sel(class="form-control") }}
+                            </div>
+                            <div class="form-group mb-3">
+                                {{ form.game3sel(class="form-control") }}
+                            </div>
+                        </div>
+                            <div class="col-md-5 d-flex flex-wrap justify-content-center text-center">
+                            <div class="form-group mb-3">
+                                <div class="d-flex flex-column">
+                                {{ form.game4sel(class="form-control") }}
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                {{ form.game5sel(class="form-control") }}
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <button type="submit">
+                            <span class="fa-solid fa-forward-step" style="color:#A8F788;font-size:600%;"></span>
+                            <p>Find games!</p>
+                            </button>
+                        </div>
+
+                    </div>
+        </form>
+
+    </div>
+{% endblock %}
