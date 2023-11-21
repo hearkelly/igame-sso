@@ -7,7 +7,7 @@ if os.path.exists(dotenv_path):
 
 from iGame import create_app
 
-app = create_app('default')
+app = create_app(os.environ.get('FLASK_CONFIG'))
 
 
 @app.cli.command()
