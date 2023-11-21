@@ -1,6 +1,4 @@
 from datetime import datetime
-
-from sqlalchemy.orm import relationship, backref
 from sqlalchemy_serializer import SerializerMixin
 from flask_sqlalchemy import SQLAlchemy
 from functions import hash_pass
