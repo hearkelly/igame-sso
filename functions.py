@@ -11,12 +11,6 @@ import hashlib
 WRAPPER = IGDBWrapper(os.environ.get('CLIENT_ID'), os.environ.get('CLIENT_SECRET'))
 
 
-# def get_home_version(ids_: list):
-#     idStrings = ','.join(map(str, sorted(ids_)))
-#     version_hash = (hashlib.md5(idStrings.encode())).hexdigest()
-#     return version_hash
-
-
 # returns list of games with id, name, platforms
 def get_games(term: str):
     search = term.strip()

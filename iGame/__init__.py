@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_migrate import Migrate
 from flask_caching import Cache
@@ -10,7 +12,7 @@ bootstrap = Bootstrap5()
 modal = Modal()
 login_manager = LoginManager()
 login_manager.login_view = 'main.index'
-cache = Cache(config={'CACHE_TYPE': 'RedisCache'})
+cache = Cache(config={'CACHE_TYPE': 'RedisCache', 'CACHE_REDIS_URL': os.environ.get('REDIS_TLS_URL')})
 migrate = Migrate()
 
 def create_app(config_name):

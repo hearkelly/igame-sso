@@ -1,18 +1,27 @@
+from pprint import pprint
 import os
+import requests.exceptions
+from igdb.wrapper import IGDBWrapper
+from more_itertools import collapse
+import json
+import hashlib
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+# import from env var or tokens.py
+# .get() is currently set in a .env file
+WRAPPER = IGDBWrapper('x80ohduafgkshvv7rnsf1r3c8nd5lz', '4us8cgnvbegtoc240fp9uiynrj30v1')
 
+def get_game_info(id_: int):
+    # cover, platforms, age rating, mode, genres, themes, rating, summary
+    try:
+        rq = WRAPPER.api_request(
+            'games',
+            f'f name, cover.url; where id = {id_};'
+        )
+        response = json.loads(rq)
+        if len(response) == 1:
+            return response[0]
+    except requests.exceptions.HTTPError as err:
+        print(f"{err}")
+        return None
 
-engine = create_engine('postgresql://hearkelly:8608!06aeAWS@igame-hk.c2hiop2hj9wf.us-east-2.rds.amazonaws.com/igame')
-
-try:
-    connection=engine.connect()
-    print("Database connected")
-
-    result = connection.execute('SELECT 1')
-    print(result.fetchone())
-
-except Exception as e:
-    print(e)
-
+print(get_game_info(13000))
