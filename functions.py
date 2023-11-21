@@ -161,6 +161,7 @@ def get_list(games, plats, hiGen, noGen, hiThm, noThm):
     if len(hiThm) > 1:
         hiThm = tuple(hiThm)
     elif len(hiThm) == 1:
+        print(type(hiThm))
         hiThm = hiThm[0]
     rqString += f'& themes.id = ({hiThm})'
     if len(noThm) > 1:
