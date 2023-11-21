@@ -15,7 +15,7 @@ migrate = Migrate()
 
 def create_app(config_name):
     # create and configure the app
-    app = Flask('igame', template_folder='igame/templates')
+    app = Flask('igame', template_folder='iGame/templates')
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
