@@ -50,34 +50,38 @@ def get_game_info(id_: int):
         return None
 
 
-def game_finder(selectPlatformCategory, selectPlatformFamily, selectThemes, selectGenres, selectModes):
+def game_finder(selectPlatformCategory=(), selectPlatformFamily=(), selectThemes=(), selectGenres=(), selectModes=()):
     rqString = 'f name, cover.url, summary,storyline,screenshots.url,age_ratings.synopsis,game_modes.name,genres.name, platforms.category, platforms.platform_family, rating,themes.name; where rating != null'
     if len(selectPlatformCategory) > 1:
         selectPlatformCategory = tuple(selectPlatformCategory)
+        rqString += f'& platforms.category = ({selectPlatformCategory})'
     elif len(selectPlatformCategory) == 1:
         selectPlatformCategory = selectPlatformCategory[0]
-    rqString += f'& platforms.category = ({selectPlatformCategory})'
+        rqString += f'& platforms.category = ({selectPlatformCategory})'
     if len(selectPlatformFamily) > 1:
         selectPlatformFamily = tuple(selectPlatformFamily)
+        rqString += f'& platforms.platform_family = ({selectPlatformFamily})'
     elif len(selectPlatformFamily) == 1:
         selectPlatformFamily = selectPlatformFamily[0]
-    rqString += f'& platforms.platform_family = ({selectPlatformFamily})'
+        rqString += f'& platforms.platform_family = ({selectPlatformFamily})'
     if len(selectThemes) > 1:
         selectThemes = tuple(selectThemes)
+        rqString += f'& themes = ({selectThemes})'
     elif len(selectThemes) == 1:
         selectThemes = selectThemes[0]
-    rqString += f'& themes = ({selectThemes})'
+        rqString += f'& themes = ({selectThemes})'
     if len(selectGenres) > 1:
         selectGenres = tuple(selectGenres)
+        rqString += f'& genres = ({selectGenres})'
     elif len(selectGenres) == 1:
         selectGenres = selectGenres[0]
-    rqString += f'& genres = ({selectGenres})'
+        rqString += f'& genres = ({selectGenres})'
     if len(selectModes) > 1:
         selectModes = tuple(selectModes)
+        rqString += f'& game_modes = ({selectModes})'
     elif len(selectModes) == 1:
         selectModes = selectModes[0]
-    rqString += f'& game_modes = ({selectModes})'
-
+        rqString += f'& game_modes = ({selectModes})'
     rq = WRAPPER.api_request('games', f'{rqString}; limit 50; sort rating desc;')
     load = json.loads(rq)
 
