@@ -256,7 +256,6 @@ def game(id_):
 # to do: cache game finder filters
 @main.route('/gameFinder', methods=['GET', 'POST'])
 @login_required
-@cache.cached(timeout=864000)
 def gameFinder():
     """
     todoLagain, can option names be generated directly in jinja?
