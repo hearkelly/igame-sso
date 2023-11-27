@@ -30,3 +30,5 @@ nil = list()
 if len(nil) == 0:
     print('yes')
 
+(tpl1,) = 1,2,3
+
