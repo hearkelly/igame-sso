@@ -5,6 +5,10 @@ from wtforms import ValidationError
 from ..models import User
 
 
+class FilterForm(FlaskForm):
+    submit = SubmitField('search')
+    pass
+
 class RatingForm(FlaskForm):
     gameRating = IntegerRangeField('Rating Number', validators=[DataRequired()])
     submit = SubmitField('RATE')
