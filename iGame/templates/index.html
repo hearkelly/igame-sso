@@ -2,16 +2,23 @@
 {% import "bootstrap5/form.html" as wtf %}
 
 {% block page_content %}
-    <div class="col-sm-6">
-    <div class="h-100 p-0 text-white" style="background-color:#3B3B3B;">
+    <div class="d-flex justify-content-center align-items-center m-5">
+    <div class="container h-100 p-2 text-white" style="background-color:#3B3B3B;border-style:ridge;border-width:10px;border-color:#3b3b3b;">
         <h1 class="display-1" style="color:#A8F788;font-family:VT323;">iGame</h1>
-        <p class="fs-1" style="color:#F7E9AD;font-family:VT323;">game recommendation app</p>
+        <p class="fs-1" style="color:#F7E9AD;">game recommendation app</p>
         <ul class="fa-ul">
             <li><span class="fa-li"><i class="fa-solid fa-gamepad"></i></span>200,000+ games</li>
             <li><span class="fa-li"><i class="fa-solid fa-sliders"></i></span>filters for game platform, genre & theme</li>
         </ul>
-        <hr class="border border-5 rounded" style="border-color:red;">
         <p class="fs-6" style="color:#F7E9AD;">login or register for more</p>
+        <ul class="nav justify-content-center nav-justified" style="font-size:3rem;">
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal">LOGIN</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.register') }}">REGISTER</a>
+            </li>
+        </ul>
         <button class="btn btn-secondary btn-lg" type="button" data-bs-toggle="modal" data-bs-target="#loginModal">
             LOG IN
         </button>
