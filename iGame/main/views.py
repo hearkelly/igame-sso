@@ -50,7 +50,6 @@ def delete(gameID):
 
 
 @main.route('/register', methods=['GET', 'POST'])
-@cache.cached()
 def register():
     if current_user.is_authenticated:
         flash('Seems like you are registered and logged in. Log out to register a new account.')
@@ -74,7 +73,7 @@ def register():
             print(e)  # learn how to log this
             return render_template('500.html'), 500
 
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form, title="iGame - Registration")
 
 
 @main.route('/', methods=['GET', 'POST'])  # LOGIN

@@ -13,6 +13,7 @@ class Config:
     def init_app(app):
         pass
 
+
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL').replace('postgres://', 'postgresql+psycopg2://')
@@ -22,14 +23,15 @@ class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL').replace('postgres://', 'postgresql+psycopg2://')
 
     @classmethod
-    def init_app(cls,app):
+    def init_app(cls, app):
         Config.init_app(app)
+
 
 class HerokuConfig(ProductionConfig):
     SSL_REDIRECT = True if os.environ.get('DYNO') else False
 
     @classmethod
-    def init_app(cls,app):
+    def init_app(cls, app):
         ProductionConfig.init_app(app)
 
         # handle reverse proxy server headers
@@ -49,7 +51,7 @@ class HerokuConfig(ProductionConfig):
 class DockerConfig(ProductionConfig):
 
     @classmethod
-    def init_app(cls,app):
+    def init_app(cls, app):
         ProductionConfig.init_app(app)
 
         import logging
@@ -64,5 +66,3 @@ config = {'development': DevelopmentConfig,
           'heroku': HerokuConfig,
           'docker': DockerConfig,
           'default': DevelopmentConfig}
-
-
