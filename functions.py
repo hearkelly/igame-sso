@@ -5,6 +5,7 @@ from igdb.wrapper import IGDBWrapper
 from more_itertools import collapse
 import json
 import hashlib
+from iGame import cache
 
 # import from env var or tokens.py
 # .get() is currently set in a .env file
@@ -35,6 +36,7 @@ def get_games(term: str):
     return gameList
 
 
+@cache.memoize(timeout=300)
 def get_game_info(id_: int):
     # cover, platforms, age rating, mode, genres, themes, rating, summary
     try:
@@ -144,6 +146,7 @@ def get_game_names(games):
     return namedGames
 
 
+@cache.memoize(timeout=300)
 def get_list(games, plats, hiGen, noGen, hiThm, noThm):
     rqString = 'f name, cover.url, summary,storyline,screenshots.url,age_ratings.synopsis,game_modes.name,genres.name, platforms.name,rating,themes.name;'
     if len(games) > 1:
@@ -205,6 +208,7 @@ def get_list(games, plats, hiGen, noGen, hiThm, noThm):
     return gameList, tuple(similar)
 
 
+@cache.memoize(timeout=300)
 def get_genres(games: list):
     rqString = 'f genres;'
     if len(games) > 1:
@@ -223,6 +227,7 @@ def get_genres(games: list):
         return None
 
 
+@cache.memoize(timeout=300)
 def get_themes(games: list):
     rqString = 'f themes;'
     if len(games) > 1:
@@ -239,6 +244,7 @@ def get_themes(games: list):
         return None
 
 
+@cache.memoize(timeout=300)
 def get_similar(games: list):
     rqString = 'f similar_games;'
     if len(games) > 1:
@@ -257,6 +263,7 @@ def get_similar(games: list):
         return None
 
 
+@cache.memoize(timeout=300)
 def get_platforms(games: list):
     rqString = 'f platforms;'
     if len(games) > 1:
@@ -272,7 +279,7 @@ def get_platforms(games: list):
     else:
         return None
 
-
+@cache.memoize(timeout=600)
 def get_filters():
     # platforms = []
     # rq = WRAPPER.api_request('platforms', 'f name; limit 500; sort id asc;')
