@@ -12,8 +12,11 @@ from iGame import cache
 WRAPPER = IGDBWrapper(os.environ.get('CLIENT_ID'), os.environ.get('CLIENT_SECRET'))
 
 
-# returns list of games with id, name, platforms
+@cache.memoize(timeout=1209600)
 def get_games(term: str):
+    """
+    returns list of games with id, name, platforms
+    """
     search = term.strip()
     gameList = []
     try:
@@ -36,7 +39,7 @@ def get_games(term: str):
     return gameList
 
 
-@cache.memoize(timeout=300)
+@cache.memoize(timeout=1209600)
 def get_game_info(id_: int):
     # cover, platforms, age rating, mode, genres, themes, rating, summary
     try:
@@ -52,6 +55,7 @@ def get_game_info(id_: int):
         return None
 
 
+@cache.memoize(timeout=1209600)
 def game_finder(selectPlatformCategory=(), selectPlatformFamily=(), selectThemes=(), selectGenres=(), selectModes=()):
     rqString = 'f name, cover.url, summary,storyline,screenshots.url,age_ratings.synopsis,game_modes.name,genres.name, platforms.category, platforms.platform_family, rating,themes.name; where rating != null'
     if len(selectPlatformCategory) > 1:
@@ -146,7 +150,7 @@ def get_game_names(games):
     return namedGames
 
 
-@cache.memoize(timeout=300)
+@cache.memoize(timeout=1209600)
 def get_list(games, plats, hiGen, noGen, hiThm, noThm):
     rqString = 'f name, cover.url, summary,storyline,screenshots.url,age_ratings.synopsis,game_modes.name,genres.name, platforms.name,rating,themes.name;'
     if len(games) > 1:
@@ -208,7 +212,7 @@ def get_list(games, plats, hiGen, noGen, hiThm, noThm):
     return gameList, tuple(similar)
 
 
-@cache.memoize(timeout=300)
+@cache.memoize(timeout=1209600)
 def get_genres(games: list):
     rqString = 'f genres;'
     if len(games) > 1:
@@ -227,7 +231,7 @@ def get_genres(games: list):
         return None
 
 
-@cache.memoize(timeout=300)
+@cache.memoize(timeout=1209600)
 def get_themes(games: list):
     rqString = 'f themes;'
     if len(games) > 1:
@@ -244,7 +248,7 @@ def get_themes(games: list):
         return None
 
 
-@cache.memoize(timeout=300)
+@cache.memoize(timeout=1209600)
 def get_similar(games: list):
     rqString = 'f similar_games;'
     if len(games) > 1:
@@ -263,7 +267,7 @@ def get_similar(games: list):
         return None
 
 
-@cache.memoize(timeout=300)
+@cache.memoize(timeout=1209600)
 def get_platforms(games: list):
     rqString = 'f platforms;'
     if len(games) > 1:
@@ -279,7 +283,8 @@ def get_platforms(games: list):
     else:
         return None
 
-@cache.memoize(timeout=600)
+
+@cache.memoize(timeout=1209600)
 def get_filters():
     # platforms = []
     # rq = WRAPPER.api_request('platforms', 'f name; limit 500; sort id asc;')

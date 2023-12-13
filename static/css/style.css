@@ -1,3 +1,15 @@
+#card-pic {
+    filter: grayscale(100%);
+    width: 200px;
+    border-radius:50%;
+    image-rendering: pixelated;
+}
+
+mark {
+    background-color: #3B3B3B;
+    color:#A8F788;
+}
+
 html {
     height:100%;
 }
@@ -194,7 +206,7 @@ input[type='radio']:checked:after {
     outline-style:dashed;
     outline-width:4px;
     outline-color:#A8F788;
-    border-style:dotted;
-    border-width:4px;
+    border-style:groove;
+    border-width:5px;
     border-color:#F7E9AD;
 }
