@@ -42,11 +42,13 @@
                 {% for game in games %}
                 <!-- create card DIV for each game -->
                     <div class="card mb-3">
-                        <img src="{{ game.cover_url }}" class="card-img-top mt-2 card-pic align-self-center" alt="picture not ready">
-                        <div class="card-img-overlay text-center">
-                            <h3 class="card-title text-decoration-underline fst-italic align-self-center" style="font-family:VT323, monospace;">
+                        <div class="position-relative">
+                        <img src="{{ game.cover_url }}" class="card-img-top mt-2 card-pic" alt="picture not ready">
+                        <div class="card-img-overlay text-center position-absolute">
+                            <h3 class="card-title text-decoration-underline fst-italic mx-auto" style="font-family:VT323, monospace;">
                                 <mark>{{ game.name }}</mark>
                             </h3>
+                        </div>
                         </div>
                         <div class="card-body">
                             <div class="row justify-content-center">
