@@ -45,9 +45,12 @@
                         <div class="d-flex position-relative align-items-center justify-content-center">
                         <img src="{{ game.cover_url }}" class="card-img-top mt-2 card-pic" alt="picture not ready">
                         <div class="d-flex card-img-overlay text-center position-absolute align-items-center">
+                            <div class="row">
                             <h3 class="card-title text-decoration-underline fst-italic mx-auto" style="font-family:VT323, monospace;color:#735591">
                                 <mark>{{ game.name }}</mark>
                             </h3>
+                            </div>
+                            <div class="row">
                             <ul class="list-inline">
                                 <li class="list-inline-item">
                                     <a href="/add/{{ game.id }}"><span class="fa-solid fa-heart" style="vertical-align:middle;"></span></a>
@@ -60,6 +63,7 @@
                                     <a href="#"><span class="fa-solid fa-heart-crack"></span></a>
                                 </li>
                             </ul>
+                            </div>
                         </div>
                         </div>
                         <div class="card-body">
