@@ -87,23 +87,12 @@ label {
     color: #735591;
 }
 
-.card {
-    background-color:#F7726F;
-}
-.card-body {
-    color:#AB4F4D;
-}
-
 .card-footer {
     background-color:#D4D4D4;
     color:#735591;
     border-color:#A8F788;
 }
 
-.card-title {
-    font-family:Ubuntu,sans-serif;
-    color:#735591;
-}
 
 a:link {
     color: #F7E9AD;
@@ -190,11 +179,11 @@ input[type='radio']:checked:after {
 
 
 .card {
-
-    outline-style:dashed;
-    outline-width:4px;
-    outline-color:#A8F788;
-    border-style:groove;
+    background-color:#F7726F;
+    outline-style:ridge;
+    outline-width:10px;
+    outline-color:#C694F7;
+    border-style:ridge;
     border-width:5px;
-    border-color:#F7E9AD;
+    border-color:#C694F7;
 }
