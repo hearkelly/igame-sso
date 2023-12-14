@@ -48,6 +48,18 @@
                             <h3 class="card-title text-decoration-underline fst-italic mx-auto" style="font-family:VT323, monospace;color:#735591">
                                 <mark>{{ game.name }}</mark>
                             </h3>
+                            <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    <a href="/add/{{ game.id }}"><span class="fa-solid fa-heart" style="vertical-align:middle;"></span></a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="#" id="{{ game.id }}" data-bs-toggle="modal" data-bs-target="#gameinfoModal" onClick="Nfo_click(this.id)">
+                                <span class="fa-solid fa-circle-info" style="vertical-align:middle;"></span></a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="#"><span class="fa-solid fa-heart-crack"></span></a>
+                                </li>
+                            </ul>
                         </div>
                         </div>
                         <div class="card-body">
@@ -73,9 +85,8 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <a href="#" id="{{ game.id }}" data-bs-toggle="modal" data-bs-target="#gameinfoModal" onClick="Nfo_click(this.id)">
-                                <span class="fa-solid fa-circle-info" style="color:#735591;vertical-align:middle;"></span></a>
-                            <a href="/add/{{ game.id }}"><span class="fa-solid fa-circle-plus" style="vertical-align:middle;"></span></a>
+
+
                         </div>
                     </div>
                 {% endfor %}
