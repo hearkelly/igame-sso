@@ -36,7 +36,7 @@
         <!-- <p class="lead" style="color:#C694F7"><strong><em>based on games in your bag right now!</em></strong></p> -->
         <div class="container">
             <div class="row">
-                <div class="col-md">
+                <div class="col-sm">
                 {% with games = top5 %}
                 {% if games %}
                 {% for game in games %}
@@ -52,22 +52,22 @@
                         </div>
                         <div class="card-body">
                             <div class="row justify-content-evenly">
-                                <div class="col-5">
-                                    <p class="card-text lead mb-0" style="color:#C694F7;"><mark>PLATFORMS</mark></p>
+                                <div class="col-6">
+                                    <p class="card-text lead mb-0"><mark style="color:#C694F7;">PLATFORMS</mark></p>
                                     {% for platform in game.platforms %}
-                                        <p class="card-text mb-0"><mark>{{ platform }}</mark></p>
+                                        <p class="card-text mb-0"><mark style="color:#C694F7;">{{ platform }}</mark></p>
                                     {% endfor %}
                                 </div>
-                                <div class="col-5">
-                                    <p class="card-text lead mb-0" style="color:#C694F7;"><mark>GENRES</mark></p>
+                                <div class="col-6">
+                                    <p class="card-text lead mb-0"><mark style="color:#C694F7;">GENRES</mark></p>
                                     {% for genre in game.genres %}
                                         <p class="card-text mb-0"><mark>{{ genre }}</mark></p>
                                     {% endfor %}
                                 </div>
                             </div>
                             <div class="row justify-content-end">
-                                <div class="col-5">
-                                    <p class="card-text lead mb-0" style="color:#C694F7;"><mark>AVG RATING</mark></p>
+                                <div class="col-6">
+                                    <p class="card-text lead mb-0"><mark style="color:#C694F7;">AVG RATING</mark></p>
                                     <p class="card-text mb-0"><mark>{{ game.rating|int }}</mark></p>
                                 </div>
                             </div>
