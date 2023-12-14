@@ -52,22 +52,22 @@
                         </div>
                         <div class="card-body">
                             <div class="row justify-content-evenly">
-                                <div class="col-6" style="background-color:#3b3b3b;">
-                                    <p class="card-text lead mb-0" style="color:#C694F7;">PLATFORMS</p>
+                                <div class="col-5">
+                                    <p class="card-text lead mb-0" style="color:#C694F7;"><mark>PLATFORMS</mark></p>
                                     {% for platform in game.platforms %}
                                         <p class="card-text mb-0"><mark>{{ platform }}</mark></p>
                                     {% endfor %}
                                 </div>
-                                <div class="col-6" style="background-color:#3b3b3b;">
-                                    <p class="card-text lead mb-0" style="color:#C694F7;">GENRES</p>
+                                <div class="col-5">
+                                    <p class="card-text lead mb-0" style="color:#C694F7;"><mark>GENRES</mark></p>
                                     {% for genre in game.genres %}
                                         <p class="card-text mb-0"><mark>{{ genre }}</mark></p>
                                     {% endfor %}
                                 </div>
                             </div>
                             <div class="row justify-content-end">
-                                <div class="col-6" style="background-color:#3b3b3b;">
-                                    <p class="card-text lead mb-0" style="color:#C694F7;">AVG RATING</p>
+                                <div class="col-5">
+                                    <p class="card-text lead mb-0" style="color:#C694F7;"><mark>AVG RATING</mark></p>
                                     <p class="card-text mb-0"><mark>{{ game.rating|int }}</mark></p>
                                 </div>
                             </div>
