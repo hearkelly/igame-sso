@@ -31,8 +31,8 @@
 {% endblock %}
 
 {% block page_content %}
-    <div class="container-sm p-3 align-self-center" style="color:#F7E9AD;background-color:#3B3B3B;border-style:dotted;outline:dashed #F7726F;">
-        <h1 class="display-6">dashboard recs for {{ current_user.user_name }}</h1>
+    <div class="container-sm p-3 align-self-center" style="color:#A8F788;background-color:#3B3B3B;">
+        <h1 class="display-6">:dashboard recs for {{ current_user.user_name }}:</h1>
         <!-- <p class="lead" style="color:#C694F7"><strong><em>based on games in your bag right now!</em></strong></p> -->
         <div class="container">
             <div class="row">
@@ -45,7 +45,7 @@
                         <div class="position-relative">
                         <img src="{{ game.cover_url }}" class="card-img-top mt-2 card-pic" alt="picture not ready">
                         <div class="card-img-overlay text-center position-absolute">
-                            <h3 class="card-title text-decoration-underline fst-italic mx-auto" style="font-family:VT323, monospace;">
+                            <h3 class="card-title text-decoration-underline fst-italic mx-auto" style="font-family:VT323, monospace;color:#735591">
                                 <mark>{{ game.name }}</mark>
                             </h3>
                         </div>

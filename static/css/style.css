@@ -186,4 +186,5 @@ input[type='radio']:checked:after {
     border-style:ridge;
     border-width:5px;
     border-color:#C694F7;
+    border-radius:0;
 }
