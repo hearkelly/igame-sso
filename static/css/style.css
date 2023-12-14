@@ -1,4 +1,10 @@
-#card-pic {
+h1 {
+    font-family:VT323,monospace;
+    font-size: 3rem;
+    color:#A8F788;
+}
+
+.card-pic {
     filter: grayscale(100%);
     width: 200px;
     border-radius:50%;
