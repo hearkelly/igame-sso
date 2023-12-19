@@ -32,7 +32,7 @@
 
 {% block page_content %}
     <div class="container-sm p-3 align-self-center" style="color:#A8F788;background-color:#3B3B3B;">
-        <h1 class="display-6 mb-3">:dashboard recs for {{ current_user.user_name }}:</h1>
+        <h1 class="display-6 mb-2">:dashboard: recs for {{ current_user.user_name }}</h1>
         <!-- <p class="lead" style="color:#C694F7"><strong><em>based on games in your bag right now!</em></strong></p> -->
         <div class="container">
             <div class="row">
@@ -48,7 +48,7 @@
                             </h3>
                         </div>
                         <div class="d-flex position-relative align-items-center justify-content-center">
-                            <img src="{{ game.cover_url }}" class="card-img-top mt-2 card-pic" alt="picture not ready">
+                            <img src="{{ game.cover_url }}" class="card-img-top card-pic" alt="picture not ready">
                             <div class="d-flex card-img-overlay text-center position-absolute align-items-center">
                                 <ul class="list-inline">
                                     <li class="list-inline-item">
@@ -65,7 +65,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="row justify-content-center align-items-center">
+                            <div class="row justify-content-center align-items-start">
                                 <div class="col-6">
                                     <p class="card-text lead mb-0"><mark style="color:#C694F7;">PLATFORMS</mark></p>
                                     {% for platform in game.platforms %}
