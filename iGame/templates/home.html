@@ -32,7 +32,7 @@
 
 {% block page_content %}
     <div class="container-sm p-3 align-self-center" style="color:#A8F788;background-color:#3B3B3B;">
-        <h1 class="display-6 mb-4">:dashboard recs for {{ current_user.user_name }}:</h1>
+        <h1 class="display-6 mb-3">:dashboard recs for {{ current_user.user_name }}:</h1>
         <!-- <p class="lead" style="color:#C694F7"><strong><em>based on games in your bag right now!</em></strong></p> -->
         <div class="container">
             <div class="row">
@@ -42,8 +42,8 @@
                 {% for game in games %}
                 <!-- create card DIV for each game -->
                     <div class="card my-4">
-                        <div class="card-header">
-                             <h3 class="card-title text-decoration-underline fst-italic" style="font-family:VT323, monospace;color:#735591">
+                        <div class="card-header mb-0">
+                             <h3 class="card-title text-decoration-underline fst-italic">
                                 <mark>{{ game.name }}</mark>
                             </h3>
                         </div>
@@ -65,7 +65,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="row justify-content-evenly">
+                            <div class="row justify-content-center align-items-center">
                                 <div class="col-6">
                                     <p class="card-text lead mb-0"><mark style="color:#C694F7;">PLATFORMS</mark></p>
                                     {% for platform in game.platforms %}
@@ -77,8 +77,10 @@
                                     {% for genre in game.genres %}
                                         <p class="card-text mb-0"><mark>{{ genre }}</mark></p>
                                     {% endfor %}
+                                <div class="align-self-end">
                                     <p class="card-text lead mb-0"><mark style="color:#C694F7;">AVG RATING</mark></p>
                                     <p class="card-text mb-0"><mark>{{ game.rating|int }}</mark></p>
+                                </div>
                                 </div>
                             </div>
                         </div>

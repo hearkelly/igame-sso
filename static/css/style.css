@@ -189,3 +189,10 @@ input[type='radio']:checked:after {
     border-color:#C694F7;
     border-radius:0;
 }
+
+.card-header {
+    background-color:inherit;
+    border-style:none;
+    font-family:VT323, monospace;
+    color:#735591;
+}
