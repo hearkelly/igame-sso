@@ -42,11 +42,9 @@
                 {% for game in games %}
                 <!-- create card DIV for each game -->
                     <div class="card my-4">
-                        <div class="card-header mb-0">
-                             <h3 class="card-title text-decoration-underline fst-italic">
+                             <h3 class="card-header text-decoration-underline fst-italic">
                                 <mark>{{ game.name }}</mark>
                             </h3>
-                        </div>
                         <div class="d-flex position-relative align-items-center justify-content-center">
                             <img src="{{ game.cover_url }}" class="card-img-top card-pic" alt="picture not ready">
                             <div class="d-flex card-img-overlay text-center position-absolute align-items-center">
