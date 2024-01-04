@@ -6,7 +6,7 @@ h1 {
 
 .card-pic {
     filter: grayscale(100%);
-    width: 124px;
+    width: 162px;
     border-radius:50%;
     image-rendering: pixelated;
 }
