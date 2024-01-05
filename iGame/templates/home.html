@@ -74,9 +74,11 @@
                                 </div>
                                 <div class="col-6">
                                     <p class="card-text lead mb-0"><mark style="color:#C694F7;">GENRES</mark></p>
-                                    {% for genre in game.genres %}
-                                        <p class="card-text mb-0"><mark>{{ genre }}</mark></p>
+                                    <ul class="list-inline">
+                                        {% for genre in game.genres %}
+                                        <li class="list-inline-item"><mark>{{ genre }}</mark></li>
                                     {% endfor %}
+                                    </ul>
                                 <div class="align-self-end">
                                     <p class="card-text lead mb-0"><mark style="color:#C694F7;">AVG RATING</mark></p>
                                     <p class="card-text mb-0"><mark>{{ game.rating|int }}</mark></p>
