@@ -88,13 +88,6 @@ label {
     color: #735591;
 }
 
-.card-footer {
-    background-color:#D4D4D4;
-    color:#735591;
-    border-color:#A8F788;
-}
-
-
 a:link {
     color: #F7E9AD;
 }
@@ -180,13 +173,10 @@ input[type='radio']:checked:after {
 
 
 .card {
-    background-color:#F7726F;
-    outline-style:ridge;
-    outline-width:10px;
-    outline-color:#C694F7;
-    border-style:ridge;
+    background-color:transparent;
+    border-style:double;
     border-width:5px;
-    border-color:#C694F7;
+    border-color:#F7726F;
     border-radius:0;
 }
 
