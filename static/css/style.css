@@ -190,5 +190,6 @@ input[type='radio']:checked:after {
     background-color:transparent;
     border-style:none;
     font-family:VT323, monospace;
-    color:#735591;
+    color:#A8F788;
+    text-decoration: underline #735591;
 }

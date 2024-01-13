@@ -65,7 +65,7 @@
                         <div class="card-body">
                             <div class="row justify-content-center align-items-start">
                                 <div class="col-6">
-                                    <p class="card-text lead mb-0"><mark class="title-mark">PLATFORMS</mark></p>
+                                    <p class="card-text lead mb-0 title-mark">PLATFORMS</p>
                                     <ul class="list-inline">
                                         {% for platform in game.platforms %}
                                         <li class="list-inline-item"><mark>{{ platform }}</mark></li>
@@ -73,14 +73,14 @@
                                     </ul>
                                 </div>
                                 <div class="col-6">
-                                    <p class="card-text lead mb-0"><mark class="title-mark">GENRES</mark></p>
+                                    <p class="card-text lead mb-0 title-mark">GENRES</p>
                                     <ul class="list-inline">
                                         {% for genre in game.genres %}
                                         <li class="list-inline-item"><mark>{{ genre }}</mark></li>
                                     {% endfor %}
                                     </ul>
                                 <div class="align-self-end">
-                                    <p class="card-text lead mb-0"><mark class="title-mark">AVG RATING</mark></p>
+                                    <p class="card-text lead mb-0 title-mark">AVG RATING</p>
                                     <p class="card-text mb-0"><mark>{{ game.rating|int }}</mark></p>
                                 </div>
                                 </div>
