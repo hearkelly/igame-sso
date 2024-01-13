@@ -187,9 +187,9 @@ input[type='radio']:checked:after {
 }
 
 .card-header {
+    text-decoration: underline #735591;
     background-color:transparent;
     border-style:none;
     font-family:VT323, monospace;
     color:#A8F788;
-    text-decoration: underline #735591;
 }
