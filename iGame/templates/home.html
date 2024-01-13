@@ -31,6 +31,7 @@
 {% endblock %}
 
 {% block page_content %}
+    <main>
     <div class="container-sm p-3 align-self-center" style="color:#A8F788;background-color:#3B3B3B;">
         <h1 class="display-6 mb-2">:dashboard: recs for {{ current_user.user_name }}</h1>
         <!-- <p class="lead" style="color:#C694F7"><strong><em>based on games in your bag right now!</em></strong></p> -->
@@ -65,7 +66,7 @@
                         <div class="card-body">
                             <div class="row justify-content-center align-items-start">
                                 <div class="col-6">
-                                    <p class="card-text lead mb-0"><mark style="color:#C694F7;">PLATFORMS</mark></p>
+                                    <p class="card-text lead mb-0"><mark style="color:#A8F788;">PLATFORMS</mark></p>
                                     <ul class="list-inline">
                                         {% for platform in game.platforms %}
                                         <li class="list-inline-item"><mark>{{ platform }}</mark></li>
@@ -73,14 +74,14 @@
                                     </ul>
                                 </div>
                                 <div class="col-6">
-                                    <p class="card-text lead mb-0"><mark style="color:#C694F7;">GENRES</mark></p>
+                                    <p class="card-text lead mb-0"><mark style="color:#A8F788;">GENRES</mark></p>
                                     <ul class="list-inline">
                                         {% for genre in game.genres %}
                                         <li class="list-inline-item"><mark>{{ genre }}</mark></li>
                                     {% endfor %}
                                     </ul>
                                 <div class="align-self-end">
-                                    <p class="card-text lead mb-0"><mark style="color:#C694F7;">AVG RATING</mark></p>
+                                    <p class="card-text lead mb-0"><mark style="color:#A8F788;">AVG RATING</mark></p>
                                     <p class="card-text mb-0"><mark>{{ game.rating|int }}</mark></p>
                                 </div>
                                 </div>
@@ -98,6 +99,7 @@
             </div>
         </div>
     </div>
+    </main>
 {% endblock %}
 
 
