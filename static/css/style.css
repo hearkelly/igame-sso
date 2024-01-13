@@ -18,7 +18,6 @@ mark {
 
 html {
     height:100%;
-    font-family:Ubuntu Mono,sans-serif;
 }
 
 .fs-1 {
@@ -33,6 +32,7 @@ body {
     min-height:100%;
     background-color:#735591;
     color:#F7E9AD;
+    font-family:Ubuntu Mono,sans-serif;
 }
 
 .align-items-center {
