@@ -16,6 +16,11 @@ mark {
     color:#F7E9AD;
 }
 
+.title-mark {
+    background-color:transparent;
+    color:#A8F788;
+}
+
 html {
     height:100%;
 }
