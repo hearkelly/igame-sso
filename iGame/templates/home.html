@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <header role="banner">
     {% include 'nav.html' %}
+    </header>
     <div class="modal fade" id="gameinfoModal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -26,7 +28,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+    </div>
     {{ super() }} <!-- super() includes call for error message display -->
 {% endblock %}
 
@@ -43,13 +45,12 @@
                 {% for game in games %}
                 <!-- create card DIV for each game -->
                     <div class="card my-4">
-                             <h3 class="card-header fst-italic">
-                                {{ game.name }}
-                            </h3>
-                        <div class="d-flex position-relative align-items-center justify-content-center">
-                            <div class="d-flex card-img-overlay text-center position-absolute align-items-center">
-                                <ul class="list-inline">
-                                    <li class="list-inline-item">
+                        <h3 class="card-header fst-italic">
+                            {{ game.name }}
+                        </h3>
+                        <div class="card-body">
+                            <ul class="list-inline">
+                            <li class="list-inline-item">
                                         <a href="/add/{{ game.id }}"><span class="nes-icon is-big heart" style="font-size:3rem;color:#3b3b3b;"></span></a>
                                     </li>
                                     <li class="list-inline-item">
@@ -60,15 +61,20 @@
                                         <a href="#"><span class="nes-icon is-big ban" style="font-size:3rem;color:#3b3b3b;"></span></a>
                                     </li>
                                 </ul>
-                            </div>
-                        </div>
-                        <div class="card-body">
+                            <div class="row justify-content-center align-items-center">
+                                <div class="col-4">
+                                    <img src="{{ game.cover }}" class="img-fluid rounded-start" alt="...">
+                                </div>
+                                <div class="col-8">
+                                    <p class="card-text lead mb-0 title-mark">SUMMARY</p>
+                                    <p class="card-text mb-0"><mark>{{ game.summary }}</mark></p>
+                                </div>
                             <div class="row justify-content-center align-items-start">
                                 <div class="col-6">
                                     <p class="card-text lead mb-0 title-mark">PLATFORMS</p>
                                     <ul class="list-inline">
                                         {% for platform in game.platforms %}
-                                        <li class="list-inline-item"><mark>{{ platform }}</mark></li>
+                                        <li class="list-inline-item"><mark>{{ platform|truncate(15) }}</mark></li>
                                     {% endfor %}
                                     </ul>
                                 </div>
@@ -76,13 +82,13 @@
                                     <p class="card-text lead mb-0 title-mark">GENRES</p>
                                     <ul class="list-inline">
                                         {% for genre in game.genres %}
-                                        <li class="list-inline-item"><mark>{{ genre }}</mark></li>
+                                        <li class="list-inline-item"><mark>{{ genre|truncate(15) }}</mark></li>
                                     {% endfor %}
                                     </ul>
-                                <div class="align-self-end">
-                                    <p class="card-text lead mb-0 title-mark">AVG RATING</p>
-                                    <p class="card-text mb-0"><mark>{{ game.rating|int }}</mark></p>
-                                </div>
+                                    <div class="align-self-end">
+                                        <p class="card-text lead mb-0 title-mark">AVG RATING</p>
+                                        <p class="card-text mb-0"><mark>{{ game.rating|int }}</mark></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -94,6 +100,7 @@
                     </div>
                 {% endif %}
                 {% endwith %}
+                </div>
                 </div>
             </div>
         </div>

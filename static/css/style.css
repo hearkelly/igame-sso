@@ -1,3 +1,8 @@
+.navbar-brand {
+    font-family:VT323,monospace;
+    color:#A8F788;
+}
+
 h1 {
     font-family:VT323,monospace;
     font-size: 3rem;
