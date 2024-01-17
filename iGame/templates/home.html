@@ -50,26 +50,18 @@
                         </h3>
                         <div class="card-body">
                             <ul class="list-inline">
-                            <li class="list-inline-item">
+                                <li class="list-inline-item">
                                         <a href="/add/{{ game.id }}"><span class="nes-icon is-big heart" style="font-size:3rem;color:#3b3b3b;"></span></a>
-                                    </li>
-                                    <li class="list-inline-item">
+                                </li>
+                                <li class="list-inline-item">
                                         <a href="#" id="{{ game.id }}" data-bs-toggle="modal" data-bs-target="#gameinfoModal" onClick="Nfo_click(this.id)">
                                             <span class="nes-icon is-big envelope" style="font-size:3rem;color:#3b3b3b;"></span></a>
-                                    </li>
-                                    <li class="list-inline-item">
+                                </li>
+                                <li class="list-inline-item">
                                         <a href="#"><span class="nes-icon is-big ban" style="font-size:3rem;color:#3b3b3b;"></span></a>
-                                    </li>
-                                </ul>
-                            <div class="row justify-content-center align-items-center">
-                                <div class="col-4">
-                                    <img src="{{ game.cover }}" class="img-fluid rounded-start" alt="...">
-                                </div>
-                                <div class="col-8">
-                                    <p class="card-text lead mb-0 title-mark">SUMMARY</p>
-                                    <p class="card-text mb-0"><mark>{{ game.summary }}</mark></p>
-                                </div>
-                            <div class="row justify-content-center align-items-start">
+                                </li>
+                            </ul>
+                            <div class="row justify-content-center align-items-start"> <!-- align items start or center ? -->
                                 <div class="col-6">
                                     <p class="card-text lead mb-0 title-mark">PLATFORMS</p>
                                     <ul class="list-inline">
@@ -100,7 +92,6 @@
                     </div>
                 {% endif %}
                 {% endwith %}
-                </div>
                 </div>
             </div>
         </div>
