@@ -68,17 +68,17 @@ td {
     background-color:#F7E9AD;
 }
 
-.modal-body {
-    color:#3B3B3B;
-}
-
 .modal-title {
-    font-family:Ubuntu,sans-serif;
+    font-family:VT323, monospace;
     color: #735591;
 }
 
 .modal-footer {
     font-family:Ubuntu,sans-serif;
+    color:#3B3B3B;
+}
+
+.form-group {
     color:#3B3B3B;
 }
 
