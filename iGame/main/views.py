@@ -219,7 +219,6 @@ def bag():
 @cache.cached(timeout=600)
 def game(id_):
     """
-    todo: I think we could pass the returned infoDict directly to jinja and compile info in the template
     :param id_:
     :return:
     """
@@ -311,7 +310,7 @@ def get_recs(bagGames, unbagGames):
     loTheme = hiTheme & noTheme
     noTheme = loTheme - hiTheme
     try:
-        # gets similar games, removes games already in bag
+        # get similar games, remove games already in bag
         similar = list(get_similar(bagGames) - set(bagGames))
     except ValueError:
         flash('There seem to be no games in your bag.')  # this should not happen

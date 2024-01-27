@@ -120,7 +120,7 @@ def hash_pass(password: str):
     :return: salted, hashed pass as string
     """
     hashPass = password
-    salt = "igame"
+    salt = os.environ.get('CLIENT_ID')
     hashPass += salt
     hashed = hashlib.md5(hashPass.encode())
     return hashed.hexdigest()
@@ -208,16 +208,13 @@ def get_list(games, plats, hiGen, noGen, hiThm, noThm):
 
 @cache.memoize(timeout=1209600)
 def get_genres(games: list):
-    rqString = 'f genres;'
     if len(games) > 1:
         games = tuple(games)
     elif len(games) == 1:
         games = games[0]
-
-    rqString += f'where id = {games}'
+    rqString = f'f genres; where id = {games}'
     rq = WRAPPER.api_request('games', f'{rqString};')
     response = json.loads(rq)
-
     if response:
         genres = set(collapse([each.get('genres') for each in response if each.get('genres')]))
         return genres
@@ -227,12 +224,11 @@ def get_genres(games: list):
 
 @cache.memoize(timeout=1209600)
 def get_themes(games: list):
-    rqString = 'f themes;'
     if len(games) > 1:
         games = tuple(games)
     elif len(games) == 1:
         games = games[0]
-    rqString += f'where id = {games}'
+    rqString = f'f themes; where id = {games}'
     rq = WRAPPER.api_request('games', f'{rqString};')
     response = json.loads(rq)
     if response:
@@ -244,14 +240,13 @@ def get_themes(games: list):
 
 @cache.memoize(timeout=1209600)
 def get_similar(games: list):
-    rqString = 'f similar_games;'
     if len(games) > 1:
         games = tuple(games)
     elif len(games) == 1:
         games = games[0]
     else:
         raise ValueError('No games provided.')
-    rqString += f'where id = {games}'
+    rqString = f'f similar_games; where id = {games}'
     rq = WRAPPER.api_request('games', f'{rqString};')
     response = json.loads(rq)
     if response:
@@ -263,12 +258,11 @@ def get_similar(games: list):
 
 @cache.memoize(timeout=1209600)
 def get_platforms(games: list):
-    rqString = 'f platforms;'
     if len(games) > 1:
         games = tuple(games)
     elif len(games) == 1:
         games = games[0]
-    rqString += f'where id = {games}'
+    rqString = f'f platforms; where id = {games}'
     rq = WRAPPER.api_request('games', f'{rqString};')
     response = json.loads(rq)
     if response:
