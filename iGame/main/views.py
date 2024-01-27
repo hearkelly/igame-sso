@@ -70,8 +70,8 @@ def register():
             return redirect(url_for('main.index'))
         except Exception as e:
             print(e)  # learn how to log this
+            flash("Registration failed. Please try again.")
             return render_template('500.html'), 500
-
     return render_template('register.html', form=form, title="iGame - Registration")
 
 
@@ -91,11 +91,11 @@ def index():
             """
             login_user(user, form.remember.data)
             session['bag'] = [g.to_dict() for g in db.session.query(Game).filter(and_(Game.user_id == current_user.id),
-                                                                                 Game.likes == True).all()]
+                                                                                 Game.likes is True).all()]
 
             session['unbag'] = [g.to_dict() for g in
                                 db.session.query(Game).filter(and_(Game.user_id == current_user.id),
-                                                              Game.likes == False).all()]
+                                                              Game.likes is False).all()]
             return redirect(url_for('main.home'))
         flash('Invalid username or password.')
     return render_template('index.html', title="Welcome to iGame!", form=form)
