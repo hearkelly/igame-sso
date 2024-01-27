@@ -1,4 +1,4 @@
-from pprint import pprint
+
 import os
 import requests.exceptions
 from igdb.wrapper import IGDBWrapper
@@ -127,26 +127,20 @@ def hash_pass(password: str):
 
 
 def get_game_names(games):
-    print(games)
     ids_ = [o[0] for o in games]
-    rqString = 'f name;'
     if len(ids_) > 1:
         ids_ = tuple(ids_)
     elif len(ids_) == 1:
         ids_ = ids_[0]
     else:
         return None
-    print(ids_,len(ids_))
     rq = WRAPPER.api_request('games', f'f name; where id = {ids_}; limit {len(ids_)};)')
     resp = json.loads(rq)
-    pprint(resp)
     names = {each['id']: each['name'] for each in resp}
-    print(f"Names{names},{len(names)}")
     namedGames = []
     for id_, rating in games:
         name = names.get(id_)
         namedGames.append({'id': id_, 'name': name, 'rating': rating})
-    print(f'Named{namedGames},{len(namedGames)}')
     return namedGames
 
 

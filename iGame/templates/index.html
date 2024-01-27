@@ -3,18 +3,18 @@
 
 {% block page_content %}
     <div class="d-flex align-items-center min-vh-100 m-5">
-    <div class="container p-2 text-white" style="max-width:400px;background-color:#3B3B3B;border-style:ridge;border-width:10px;border-color:#3b3b3b;flex-shrink:0;">
+    <div class="container p-2 text-white" style="max-width:400px;background-color:#3B3B3B;border-style:double;border-width:6px;border-color:#735591;flex-shrink:0;">
         <h1 class="display-1 mb-0" style="color:#A8F788;font-family:VT323, monospace;">iGame</h1>
         <p class="fs-2" style="color:#F7E9AD;font-family:VT323, monospace;">select gaming app</p>
         <ul class="fa-ul" style="color:#F7E9AD;">
             <li><span class="fa-li"><i class="fa-solid fa-gamepad"></i></span>200,000+ games</li>
             <li><span class="fa-li"><i class="fa-solid fa-sliders"></i></span>filters for game platform, genre & theme</li>
         </ul>
-        <ul class="nav justify-content-center nav-justified m-2 gx-1 index-li" style="font-size:2.5rem;">
-            <li class="nav-item mb-2" style="border-style:outset;border-width:10px;background-color:#F7726F;border-color:#F7726F;font-family:VT323, monospace">
+        <ul class="nav flex-column justify-content-center" style="font-size:2.5rem;">
+            <li class="nav-item" style="border-style:outset;border-width:10px;background-color:#F7726F;border-color:#F7726F;font-family:VT323, monospace">
                 <a class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal" style="color:#A8F788;">LOGIN</a>
             </li>
-            <li class="nav-item mb-2" style="border-style:outset;border-width:10px;background-color:#C694F7;border-color:#C694F7;font-family:VT323, monospace;">
+            <li class="nav-item" style="border-style:outset;border-width:10px;background-color:#C694F7;border-color:#C694F7;font-family:VT323, monospace;">
                 <a class="nav-link" href="{{ url_for('main.register') }}" style="color:#AB4F4D;font-family:VT323, monospace;">REGISTER</a>
             </li>
         </ul>

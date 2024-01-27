@@ -1,4 +1,3 @@
-from pprint import pprint
 from flask import flash, render_template, redirect, request, url_for, jsonify, session
 from sqlalchemy import and_
 from sqlalchemy.exc import SQLAlchemyError
@@ -301,15 +300,6 @@ def docs():
 def user():
     return '<h1>User Details</h1>'
 
-
-# @cache.cached(timeout=300)
-# def get_top5(bagGames, unbagGames):
-#     top5 = getRecs(bagGames, unbagGames)
-#     ids_ = [g['id'] for g in top5]
-#     currentVersion = get_home_version(ids_)
-#     session['home_version'] = currentVersion
-#     print('Session home version:', session.get('home_version'))
-#     return top5
 
 @cache.memoize(timeout=300)
 def get_recs(bagGames, unbagGames):
