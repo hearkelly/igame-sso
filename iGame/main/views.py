@@ -123,9 +123,8 @@ def home():
     bagGames = [g['game_id'] for g in bag]
     unbagGames = [g['game_id'] for g in unbag]
     top5 = get_recs(bagGames, unbagGames)
-    sortedTop5 = sorted(top5, key=lambda g: g['rating'], reverse=True)
-    print('Session home version:', session.get('home_version'))
-    return render_template('home.html', title="iGame - Dashboard", top5=sortedTop5)
+    top5 = sorted(top5, key=lambda g: g['rating'], reverse=True)
+    return render_template('home.html', title="iGame - Dashboard", top5=top5)
 
 
 @main.route('/gameForm', methods=['GET', 'POST'])
@@ -172,7 +171,6 @@ def gameForm2():
                  form.game3sel.data)
         dislikes = (form.game4sel.data,
                     form.game5sel.data)
-        print(likes, dislikes)
         for gameID in likes:
             userGame = Game(current_user.id, gameID, True)
             db.session.add(userGame)
@@ -196,7 +194,6 @@ def rate(gameID):
             db.session.commit()
             flash('Rating saved.')
         except Exception as e:
-            print(e)
             flash('Rating not saved.')
     return redirect(url_for('main.bag'))
 
@@ -208,11 +205,11 @@ def bag():
     let's return a list of {} with keys for gameID, gameName, gameRating
     """
     form = RatingForm()
-    bagItems = db.session.query(Game.game_id, Game.rating).filter(
+    items = db.session.query(Game.game_id, Game.rating).filter(
         and_(Game.user_id == current_user.id, Game.likes == True)).all()
-    if not bagItems:
+    if not items:
         return render_template('bag.html', games=[], form=form)
-    named = get_game_names(bagItems)
+    named = get_game_names(items)
     sortedBag = sorted(named, key=lambda g: str(g['name']))
     return render_template('bag.html', games=sortedBag, form=form)
 
@@ -227,7 +224,7 @@ def game(id_):
     :return:
     """
     # cover, platforms, genres, themes, rating
-    platforms, modes, genres, themes, screenshot_url = [], [], [], [], []
+    platforms, modes, genres, themes, screenshot_url, cover_url = [], [], [], [], [], None
     info_dict = get_game_info(id_)
     name = info_dict.get('name')
     if info_dict.get('platforms'):
