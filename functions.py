@@ -115,12 +115,11 @@ def game_finder(selectPlatformCategory=(), selectPlatformFamily=(), selectThemes
 
 def hash_pass(password: str):
     """
-    todo: move salt to instance VM environment variable
     :param: password input validated in form
     :return: salted, hashed pass as string
     """
     hashPass = password
-    salt = os.environ.get('CLIENT_ID')
+    salt = os.environ.get('SALT')
     hashPass += salt
     hashed = hashlib.md5(hashPass.encode())
     return hashed.hexdigest()
