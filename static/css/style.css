@@ -65,11 +65,11 @@ td {
 }
 
 .modal-content {
-    background-color:#D4D4D4;
+    background-color:#F7E9AD;
 }
 
 .modal-body {
-    color: #0f0f0f;
+    color:#3B3B3B;
 }
 
 .modal-title {
@@ -79,7 +79,7 @@ td {
 
 .modal-footer {
     font-family:Ubuntu,sans-serif;
-    color:#3B3B3B   ;
+    color:#3B3B3B;
 }
 
 label {
