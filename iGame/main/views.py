@@ -91,11 +91,11 @@ def index():
             """
             login_user(user, form.remember.data)
             session['bag'] = [g.to_dict() for g in db.session.query(Game).filter(and_(Game.user_id == current_user.id),
-                                                                                 Game.likes is True).all()]
+                                                                                 Game.likes == True).all()]
 
             session['unbag'] = [g.to_dict() for g in
                                 db.session.query(Game).filter(and_(Game.user_id == current_user.id),
-                                                              Game.likes is False).all()]
+                                                              Game.likes == False).all()]
             return redirect(url_for('main.home'))
         flash('Invalid username or password.')
     return render_template('index.html', title="Welcome to iGame!", form=form)
