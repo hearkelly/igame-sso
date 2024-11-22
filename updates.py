@@ -104,16 +104,3 @@ while token is None or not token:
         token = update_token()
     if token:
         print("Token is valid.")
-
-
-""" GET os.environs for client_id, access token.
-    VALIDATE with twitch GET request:
-    if valid, do not update heroku config vars
-    IF NOT VALID:
-        - run POST to twitch, validate, then replace heroku config vars
-
-Keyword arguments:
-argument -- description
-Return: return_description
-"""
-
