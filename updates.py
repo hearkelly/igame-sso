@@ -1,5 +1,3 @@
-
-import json
 import os
 import requests
 
@@ -13,64 +11,57 @@ updates.py:
     - if not valid, updates token env var with newly generated token
 """
 
-HEROKU_TOKEN = os.environ.get('HRKU_TOKEN')  # does not expire
-TWITCH_ID = os.environ.get('TWITCH_ID')
-TWITCH_SECRET = os.environ.get('TWITCH_SECRET')  # twitch credentials to generate igdb_token (our api)
-IGDB_TOKEN = os.environ.get('IGDB_TOKEN')
 APP_NAME = 'i-game-container1'
 
+
 def generate_token():  # returns token
+    new_token = ''
     # Endpoint for OAuth token generation
     uri = 'https://id.twitch.tv/oauth2/token'
 
     # Payload for the POST request
     body = {
-        'client_id': TWITCH_ID or '',
-        'client_secret': TWITCH_SECRET or '',
+        'client_id': os.environ.get('TWITCH_ID') or '',
+        'client_secret': os.environ.get('TWITCH_SECRET') or '',
         'grant_type': 'client_credentials'
     }
 
-    # Make the POST request
     try:
-        rq = requests.post(uri, data=body)
-        if rq.status_code == 200:
-            response = rq.json()
-            print(response)
-            new_token = response.get('access_token', None)  # get new token here
+        rq = requests.post(url=uri, json=body)
+        rq.raise_for_status()
+        response = rq.json()
+        new_token = response.get('access_token')
     except requests.exceptions.RequestException as e:
         print("Failed to parse JSON, connection error, timeout:", e)
-        print("Response text:", rq.text)
     if new_token and validate(new_token):
         return new_token
     else:
-        print('No new token.')
-        return None
+        print("ERROR.")
+        return ''
 
 
-def validate(token):
-    print(token)
+def validate(_token):
     uri = 'https://id.twitch.tv/oauth2/validate'
     headers = {
-        'Authorization': f'Bearer {token}'
+        'Authorization': f'Bearer {_token}'
     }
-
-    try:    
-        rq = requests.get(uri, headers=headers)
+    try:
+        rq = requests.get(url=uri, headers=headers)
+        rq.raise_for_status()  # replaces checking if request status == 200
+        response = rq.json()
+        if response['expires_in'] < 60 * 60:  # 'expires_in' value in seconds: int
+            return False
+        else:
+            return True
     except requests.exceptions.RequestException as e:
         # if no connection, timeout, http error ...
         print(f'{e}')
-        return False
-    
-    if rq.status_code == 200:
-        return True
-    else:
-        print(f'Invalid. Request status code: {rq.status_code}')
-        return False
+    return False
 
 
-def update_token(): # api call to heroku, return true
+def update_token():  # api call to heroku, return true
     new_token = generate_token()
-    if new_token:
+    if new_token:  # will not continue if empty string
         """
         api call
         """
@@ -78,29 +69,47 @@ def update_token(): # api call to heroku, return true
         headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/vnd.heroku+json; version=3',
-            'Authorization': f'Bearer {HEROKU_TOKEN}' or ''
+            'Authorization': f"Bearer {os.environ.get('HRKU_TOKEN')}" or ''
         }
         body = {
-            'IGDB_TOKEN':f'{new_token}'
+            'IGDB_TOKEN': new_token
         }
         try:
-            rq = requests.patch(uri,headers=headers,json=body)
-            if rq.status_code == 200:
-                print("Configuration updated!")
-                return True
+            rq = requests.patch(uri, headers=headers, json=body)
+            rq.raise_for_status()
+            print("Configuration updated!")
+            return True
         except requests.exceptions.RequestException as e:
             # if no connection, timeout, http error ...
             print(f'{e}')
-            return False
-    print("Failed to generate new token.")
     return False
-        
 
 
-token:bool = None
-while token is None or not token:
-    token = validate(IGDB_TOKEN)
+def get_current_token():
+    """
+    access config vars from heroku api
+    """
+    uri = f'https://api.heroku.com/apps/{APP_NAME}/config-vars'
+    headers = {
+        'Authorization': f"Bearer {os.environ.get('HRKU_TOKEN')}" or '',
+        'Accept': 'application/vnd.heroku+json; version=3'
+    }
+    try:
+        rq = requests.get(url=uri, headers=headers)
+        rq.raise_for_status()
+        response = rq.json()
+        return response.get('IGDB_TOKEN')  # TODO: CHANGE CODE VAR NAMES TO MATCH CONFIG
+    except requests.exceptions.RequestException as e:
+        # if no connection, timeout, http error ...
+        # LOG ERROR, return None
+        print(e)
+        return ''  # I'm returning an empty string to align with JSON format
+
+
+token: bool = False
+while not token:
+    current = get_current_token()
+    token = validate(current)
     if not token:
         token = update_token()
-    if token:
-        print("Token is valid.")
+    print(f"Token Status: {token}")
