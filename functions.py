@@ -7,9 +7,9 @@ import json
 import hashlib
 from iGame import cache
 
-# import from env var or tokens.py
+
 # .get() is currently set in a .env file
-WRAPPER = IGDBWrapper(os.environ.get('CLIENT_ID'), os.environ.get('CLIENT_SECRET'))
+WRAPPER = IGDBWrapper(os.environ.get('TWITCH_ID'), os.environ.get('IGDB_TOKEN'))
 
 
 @cache.memoize(timeout=1209600)
