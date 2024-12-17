@@ -8,7 +8,20 @@ from . import main
 from .forms import GameForm, LoginForm, RegistrationForm, RatingForm, GameSelections
 from ..models import User, Game, db
 from flask_login import login_user, logout_user, login_required, current_user
-from iGame import cache
+from iGame import cache, oauth
+
+google = oauth.register(
+    name='google',
+    client_id='',
+    client_secret='',
+    access_token_url='https://accounts.google.com/o/oauth2/token',
+    access_token_params=None,
+    authorize_url='https://accounts.google.com/o/oauth2/auth',
+    authorize_params=None,
+    api_base_url='https://www.googleapis.com/oauth2/v1/',
+    client_kwargs={'scope': 'email birthday'},
+    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration'
+)
 
 
 @main.route('/add/<gameID>')
@@ -79,27 +92,34 @@ def register():
 def index():
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = db.session.query(User) \
-            .filter(User.user_name == form.username.data) \
-            .first()
-        if user is not None and user.verify_password(form.password.data):
-            """
-            the user query returns a Python object of the .first() user
-            it finds in the db
-            """
-            login_user(user, form.remember.data)
-            session['bag'] = [g.to_dict() for g in db.session.query(Game).filter(and_(Game.user_id == current_user.id),
-                                                                                 Game.likes == True).all()]
 
-            session['unbag'] = [g.to_dict() for g in
-                                db.session.query(Game).filter(and_(Game.user_id == current_user.id),
-                                                              Game.likes == False).all()]
-            return redirect(url_for('main.home'))
-        flash('Invalid username or password.')
-    return render_template('index.html', title="Welcome to iGame!", form=form)
+    # form = LoginForm()
+    # if form.validate_on_submit():
+    #     user = db.session.query(User) \
+    #         .filter(User.user_name == form.username.data) \
+    #         .first()
+    #     if user is not None and user.verify_password(form.password.data):
+    #         """
+    #         the user query returns a Python object of the .first() user
+    #         it finds in db
+    #         """
+    #         login_user(user, form.remember.data)
+    #         session['bag'] = [g.to_dict() for g in db.session.query(Game).filter(and_(Game.user_id == current_user.id),
+    #                                                                              Game.likes == True).all()]
+    #
+    #         session['unbag'] = [g.to_dict() for g in
+    #                             db.session.query(Game).filter(and_(Game.user_id == current_user.id),
+    #                                                           Game.likes == False).all()]
+    #         return redirect(url_for('main.home'))
+    #     flash('Invalid username or password.')\
+    redirect_uri = url_for('main.auth', _external=True)
+    return oauth.google.authorize_redirect(redirect_uri)
 
+@main.route('/auth')
+def auth():
+    token = oauth.google.authorize_access_token()
+    print(token)
+    return redirect('/')
 
 @main.route('/logout')
 @login_required

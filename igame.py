@@ -18,5 +18,5 @@ def deploy():
     # migrate database to latest revision
     upgrade()
 
-    # create or update user roles
+    # create or update 
     db.create_all()
