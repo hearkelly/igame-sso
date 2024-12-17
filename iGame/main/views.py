@@ -1,3 +1,5 @@
+import os
+
 from flask import flash, render_template, redirect, request, url_for, jsonify, session
 from sqlalchemy import and_
 from sqlalchemy.exc import SQLAlchemyError
@@ -12,8 +14,8 @@ from iGame import cache, oauth
 
 google = oauth.register(
     name='google',
-    client_id='',
-    client_secret='',
+    client_id=os.environ.get('GOOGLE_ID'),
+    client_secret=os.environ.get('GOOGLE_SECRET'),
     access_token_url='https://accounts.google.com/o/oauth2/token',
     access_token_params=None,
     authorize_url='https://accounts.google.com/o/oauth2/auth',
