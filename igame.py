@@ -1,9 +1,14 @@
-import os
-from dotenv import load_dotenv
+"""
+HEROKU-22 DYNO LOADS THIS FILE
+https://devcenter.heroku.com/articles/heroku-22-stack
+"""
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-if os.path.exists(dotenv_path):
-    load_dotenv(dotenv_path)
+import os
+# from dotenv import load_dotenv
+
+# dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+# if os.path.exists(dotenv_path):
+#     load_dotenv(dotenv_path)
 
 from iGame import create_app
 
