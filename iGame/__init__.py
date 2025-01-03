@@ -42,5 +42,5 @@ def create_app(config_name: str):
 
     if app.config['SSL_REDIRECT']:
         Talisman(app, content_security_policy=None)
-
+    print(type(app))
     return app
