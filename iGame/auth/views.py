@@ -34,8 +34,8 @@ def login():
 
 @auth.route('/auth')
 def _auth():
-    token = oauth.google.authorize_access_token()
-    print(token)
+    # token = oauth.google.authorize_access_token()
+    # print(token)
     return redirect(url_for('main.home'))
 
 
