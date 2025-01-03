@@ -37,6 +37,7 @@ def create_app(config_name: str):
 
     from .main import main as main_bp
     from .auth import auth as auth_bp
+    print(f'auth obj type: {type(auth_bp)}')
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
 
