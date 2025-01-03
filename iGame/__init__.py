@@ -36,8 +36,10 @@ def create_app(config_name: str):
 
     from .main import main as main_bp
     print(type(main_bp))
-    from .auth import auth as auth_bp
-    print(type(auth_bp))
+    try:
+        from .auth import auth as auth_bp
+    except Exception as e:
+        print(e)
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
 
