@@ -24,13 +24,12 @@ def create_app(config_name: str):
     app = Flask('igame', template_folder='iGame/templates')
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
-
     bootstrap.init_app(app)
     login_manager.init_app(app)
     modal.init_app(app)
     cache.init_app(app)
     oauth.init_app(app)
-
+    print(type(app))
     from iGame.models import db
     db.init_app(app)
     migrate.init_app(app, db)
