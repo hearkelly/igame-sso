@@ -12,6 +12,7 @@ import os
 
 from iGame import create_app
 
+print(os.environ.get('FLASK_CONFIG') )
 app = create_app(os.environ.get('FLASK_CONFIG') or 'default')
 
 """
