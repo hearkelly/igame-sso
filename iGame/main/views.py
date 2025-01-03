@@ -77,6 +77,7 @@ def index():
     #                                                           Game.likes == False).all()]
     #
     #     flash('Invalid username or password.')\
+    return redirect((url_for('auth.login')))
 
 
 
