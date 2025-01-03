@@ -59,4 +59,4 @@ def register():
     #     print(e)  # log as error
     #     flash("Registration failed. Please try again.")
     # return render_template('register.html', title="iGame - Registration")
-    pass
+    return redirect(url_for('main.home'))
