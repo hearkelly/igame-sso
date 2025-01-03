@@ -39,24 +39,24 @@ def auth():
     return redirect(url_for('main.home'))
 
 
-@auth.route('/register', methods=['GET', 'POST'])
-def register():
-    # if current_user.is_authenticated:
-    #     flash('Seems like you are registered and logged in. Log out to register a new account.')
-    #     return redirect(url_for('main.home'))
-    #
-    # try:
-    #     new = User(username, password, email)
-    # except Exception as err:
-    #     flash(message=f"Object Creation Error: {err}",category='error')  # log as error
-    #     return render_template('404.html'), 404
-    # try:
-    #     db.session.add(new)
-    #     db.session.commit()
-    #     flash("Registered!")
-    #     return redirect(url_for('main.index'))
-    # except Exception as e:
-    #     print(e)  # log as error
-    #     flash("Registration failed. Please try again.")
-    # return render_template('register.html', title="iGame - Registration")
-    return redirect(url_for('main.home'))
+# @auth.route('/register', methods=['GET', 'POST'])
+# def register():
+#     # if current_user.is_authenticated:
+#     #     flash('Seems like you are registered and logged in. Log out to register a new account.')
+#     #     return redirect(url_for('main.home'))
+#     #
+#     # try:
+#     #     new = User(username, password, email)
+#     # except Exception as err:
+#     #     flash(message=f"Object Creation Error: {err}",category='error')  # log as error
+#     #     return render_template('404.html'), 404
+#     # try:
+#     #     db.session.add(new)
+#     #     db.session.commit()
+#     #     flash("Registered!")
+#     #     return redirect(url_for('main.index'))
+#     # except Exception as e:
+#     #     print(e)  # log as error
+#     #     flash("Registration failed. Please try again.")
+#     # return render_template('register.html', title="iGame - Registration")
+#     return redirect(url_for('main.home'))
