@@ -29,7 +29,7 @@ def login():
     """
     view for user sso choices
     """
-    redirect_uri = url_for('auth.auth', _external=True)
+    redirect_uri = url_for('auth._auth', _external=True)
     return oauth.google.authorize_redirect(redirect_uri)
 
 @auth.route('/auth')
