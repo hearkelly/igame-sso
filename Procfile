@@ -1,1 +1,2 @@
-web: waitress-serve --port=$PORT igame:app
+web: waitress-serve --port=$PORT iGame:app
+release: flask deploy
