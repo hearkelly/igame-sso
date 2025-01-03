@@ -39,7 +39,12 @@ class HerokuConfig(ProductionConfig):
             from werkzeug.middleware.proxy_fix import ProxyFix
         except ImportError as e:
             print(e)
-        app.wsgi_app = ProxyFix(app.wsgi_app)
+        app.wsgi_app = ProxyFix(app.wsgi_app,
+                                x_for=1,
+                                x_proto=1,
+                                x_host=1,
+                                x_port=1,
+                                x_prefix=1)
 
         import logging
         from logging import StreamHandler
