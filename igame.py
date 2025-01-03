@@ -12,16 +12,19 @@ import os
 
 from iGame import create_app
 
-app = create_app(os.environ.get('FLASK_CONFIG'))
+app = create_app(os.environ.get('FLASK_CONFIG') or 'default')
 
-
-@app.cli.command()
-def deploy():
-    from flask_migrate import upgrade
-    from iGame.models import db
-
-    # migrate database to latest revision
-    upgrade()
-
-    # create or update 
-    db.create_all()
+"""
+MOVE TO PROCFILE command -> release: flask db upgrade (head?)
+also need to re-configure models, db 
+"""
+# @app.cli.command()
+# def deploy():
+#     from flask_migrate import upgrade
+#     from iGame.models import db
+#
+#     # migrate database to latest revision
+#     upgrade()
+#
+#     # create or update
+#     db.create_all()

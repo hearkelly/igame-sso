@@ -70,4 +70,4 @@ config = {'development': DevelopmentConfig,
           'production': ProductionConfig,
           'heroku': HerokuConfig,
           'docker': DockerConfig,
-          'default': DevelopmentConfig}
+          'default': HerokuConfig}
