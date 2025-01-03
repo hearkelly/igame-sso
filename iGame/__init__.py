@@ -7,13 +7,14 @@ from flask_caching import Cache
 from flask_bootstrap import Bootstrap5
 from flask_login import LoginManager
 from flask_modals import Modal
+from flask_talisman import Talisman
 
 from config import config
 
 bootstrap = Bootstrap5()
 modal = Modal()
 login_manager = LoginManager()
-login_manager.login_view = 'main.index'
+login_manager.login_view = 'auth.login'
 cache = Cache(config={'CACHE_TYPE': 'RedisCache', 'CACHE_REDIS_URL': os.environ.get('REDIS_URL')})
 migrate = Migrate()
 oauth = OAuth()
@@ -34,11 +35,12 @@ def create_app(config_name: str):
     db.init_app(app)
     migrate.init_app(app, db)
 
-    from .main import main as pinkprint
-    app.register_blueprint(pinkprint)
+    from .main import main as main
+    from .auth import auth as auth
+    app.register_blueprint(main)
+    app.register_blueprint(auth)
 
     if app.config['SSL_REDIRECT']:
-        from flask_sslify import SSLify
-        sslify = SSLify(app)
+        Talisman(app, content_security_policy=None, force_https=True)
 
     return app
