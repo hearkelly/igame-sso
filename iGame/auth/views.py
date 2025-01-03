@@ -33,7 +33,7 @@ def login():
     return oauth.google.authorize_redirect(redirect_uri)
 
 @auth.route('/auth')
-def auth():
+def _auth():
     token = oauth.google.authorize_access_token()
     print(token)
     return redirect(url_for('main.home'))
