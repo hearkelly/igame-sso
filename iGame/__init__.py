@@ -35,12 +35,12 @@ def create_app(config_name: str):
     db.init_app(app)
     migrate.init_app(app, db)
 
-    from .main import main as main
-    from .auth import auth as auth
-    app.register_blueprint(main)
-    app.register_blueprint(auth)
+    from .main import main as main_bp
+    from .auth import auth as auth_bp
+    app.register_blueprint(main_bp)
+    app.register_blueprint(auth_bp)
 
     if app.config['SSL_REDIRECT']:
-        Talisman(app, content_security_policy=None, force_https=True)
+        Talisman(app, content_security_policy=None)
 
     return app
