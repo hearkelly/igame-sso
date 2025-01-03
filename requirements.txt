@@ -16,6 +16,7 @@ Flask-Login==0.6.2
 Flask-Migrate==4.0.5
 Flask-Modals==0.5.1
 Flask-SQLAlchemy==3.0.3
+flask-talisman
 Flask-WTF==1.1.1
 greenlet==2.0.2
 idna==3.4
