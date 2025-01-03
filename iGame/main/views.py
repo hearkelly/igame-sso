@@ -12,28 +12,19 @@ from ..models import User, Game, db
 from flask_login import login_user, logout_user, login_required, current_user
 from iGame import cache, oauth
 
-google = oauth.register(
-    name='google',
-    client_id=os.environ.get('GOOGLE_ID'),
-    client_secret=os.environ.get('GOOGLE_SECRET'),
-    access_token_url='https://accounts.google.com/o/oauth2/token',
-    access_token_params=None,
-    authorize_url='https://accounts.google.com/o/oauth2/auth',
-    authorize_params=None,
-    api_base_url='https://www.googleapis.com/oauth2/v1/',
-    client_kwargs={'scope': 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/user.birthday.read'},
-    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration'
-)
 
+@main.route('/googleef9fe119bc4df3ad.html')
+def google_verify():
+    return render_template("googleef9fe119bc4df3ad.html")
 
 @main.route('/add/<gameID>')
 @login_required
 def add(gameID):
-    userGame = Game(current_user.id, gameID, True)
+    new = Game(current_user.id, gameID, True)
     try:
-        db.session.add(userGame)
+        db.session.add(new)
         db.session.commit()
-        session['bag'].append(userGame.to_dict())
+        session['bag'].append(new.to_dict())
         flash('Game added to bag!')
     except SQLAlchemyError as error:
         print(error)
@@ -62,34 +53,6 @@ def delete(gameID):
                       db.session.query(Game).filter(and_(Game.user_id == current_user.id, Game.likes == True)).all()]
     return redirect(url_for('main.bag'))
 
-
-@main.route('/register', methods=['GET', 'POST'])
-def register():
-    if current_user.is_authenticated:
-        flash('Seems like you are registered and logged in. Log out to register a new account.')
-        return redirect(url_for('main.home'))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        username = form.username.data
-        password = form.password.data
-        email = form.email.data
-        try:
-            newUser = User(username, password, email)
-        except Exception as e:
-            print(e)
-            return render_template('404.html'), 404
-        try:
-            db.session.add(newUser)
-            db.session.commit()
-            flash("Registered!")
-            return redirect(url_for('main.index'))
-        except Exception as e:
-            print(e)  # learn how to log this
-            flash("Registration failed. Please try again.")
-            return render_template('500.html'), 500
-    return render_template('register.html', form=form, title="iGame - Registration")
-
-
 @main.route('/', methods=['GET', 'POST'])  # LOGIN
 def index():
     if current_user.is_authenticated:
@@ -112,22 +75,17 @@ def index():
     #         session['unbag'] = [g.to_dict() for g in
     #                             db.session.query(Game).filter(and_(Game.user_id == current_user.id),
     #                                                           Game.likes == False).all()]
-    #         return redirect(url_for('main.home'))
+    #
     #     flash('Invalid username or password.')\
-    redirect_uri = url_for('main.auth', _external=True)
-    return oauth.google.authorize_redirect(redirect_uri)
 
-@main.route('/auth')
-def auth():
-    token = oauth.google.authorize_access_token()
-    print(token)
-    return redirect('/')
+
+
 
 @main.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect((url_for('main.index')))
+    return redirect((url_for('auth.login')))
 
 
 @main.route('/home', methods=['GET'])
