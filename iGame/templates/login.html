@@ -1,9 +1,6 @@
-
 {% extends 'base.html' %}
 
-
 {% block page_content %}
-
                     <form action="/login" id="LoginForm" method="POST" autocomplete="off" class="needs-validation form-signin" novalidate>
                         {{ form.hidden_tag() }}
                         <div class="form-group">
@@ -25,5 +22,4 @@
 
                         {{ form.submit() }}
                     </form>
-
 {% endblock %}
