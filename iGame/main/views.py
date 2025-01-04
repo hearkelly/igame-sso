@@ -53,40 +53,15 @@ def delete(gameID):
                       db.session.query(Game).filter(and_(Game.user_id == current_user.id, Game.likes == True)).all()]
     return redirect(url_for('main.bag'))
 
-@main.route('/', methods=['GET', 'POST'])  # LOGIN
+@main.route('/', methods=['GET', 'POST'])
 def index():
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
-
-    # form = LoginForm()
-    # if form.validate_on_submit():
-    #     user = db.session.query(User) \
-    #         .filter(User.user_name == form.username.data) \
-    #         .first()
-    #     if user is not None and user.verify_password(form.password.data):
-    #         """
-    #         the user query returns a Python object of the .first() user
-    #         it finds in db
-    #         """
-    #         login_user(user, form.remember.data)
-    #         session['bag'] = [g.to_dict() for g in db.session.query(Game).filter(and_(Game.user_id == current_user.id),
-    #                                                                              Game.likes == True).all()]
-    #
-    #         session['unbag'] = [g.to_dict() for g in
-    #                             db.session.query(Game).filter(and_(Game.user_id == current_user.id),
-    #                                                           Game.likes == False).all()]
-    #
-    #     flash('Invalid username or password.')\
     return redirect((url_for('auth.login')))
 
 
 
 
-@main.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect((url_for('auth.login')))
 
 
 @main.route('/home', methods=['GET'])

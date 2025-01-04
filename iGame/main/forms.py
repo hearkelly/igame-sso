@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerRangeField
-from wtforms.validators import DataRequired, Regexp, Email, EqualTo, InputRequired, Length
+from wtforms.validators import DataRequired
 from wtforms import ValidationError
 from ..models import User
 
@@ -15,12 +15,9 @@ class RatingForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(message="Username required for login."),
-                                                   Regexp('[^<>*]', message="Enter username again.")])
-    password = PasswordField('Password', validators=[DataRequired(message="Password required for login."),
-                                                     Regexp('[^<>*]', message="Enter password again.")])
-    remember = BooleanField('Remember Me!')
-    submit = SubmitField('Log In')
+    email = StringField('SET EMAIL', validators=[DataRequired(message="Choose a login method.")])
+    remember = BooleanField('SET LOGIN DURATION: 1 year')
+    submit = SubmitField('submit request')
 
 
 class GameForm(FlaskForm):
@@ -41,23 +38,23 @@ class GameSelections(FlaskForm):
     submit = SubmitField('Confirm Selections')
 
 
-class RegistrationForm(FlaskForm):
-    username = StringField('A Username',
-                           validators=[DataRequired(message="iGames requires a username for user identification."),
-                                       Length(3, 50, message="Enter a username with 3 <= length <= 50"), Regexp('\w',
-                                                                                                                message="Username must contain only Latin letters and whole numbers.")])
-    password = PasswordField('A Password', validators=[
-        InputRequired(message="Enter a desired password in this field and the next field."),
-        Regexp('[^<>*]', message="Use letters, numbers and punctuation marks."),
-        EqualTo('password_confirm', message='Passwords must match.')])
-    password_confirm = PasswordField('Confirm Password',
-                                     validators=[InputRequired(message="Re-enter desired password."),
-                                                 EqualTo('password', message='Passwords do not match.')])
-    email = StringField('Email Address', validators=[DataRequired(message="iGames registration requires email input."),
-                                                     Regexp('[^<>*]',
-                                                            message="Re-type email like: name@domain.whatever"),
-                                                     Email(message="Invalid email input.")])
-    submit = SubmitField('Register Me!')
+# class RegistrationForm(FlaskForm):
+#     username = StringField('A Username',
+#                            validators=[DataRequired(message="iGames requires a username for user identification."),
+#                                        Length(3, 50, message="Enter a username with 3 <= length <= 50"), Regexp('\w',
+#                                                                                                                 message="Username must contain only Latin letters and whole numbers.")])
+#     password = PasswordField('A Password', validators=[
+#         InputRequired(message="Enter a desired password in this field and the next field."),
+#         Regexp('[^<>*]', message="Use letters, numbers and punctuation marks."),
+#         EqualTo('password_confirm', message='Passwords must match.')])
+#     password_confirm = PasswordField('Confirm Password',
+#                                      validators=[InputRequired(message="Re-enter desired password."),
+#                                                  EqualTo('password', message='Passwords do not match.')])
+#     email = StringField('Email Address', validators=[DataRequired(message="iGames registration requires email input."),
+#                                                      Regexp('[^<>*]',
+#                                                             message="Re-type email like: name@domain.whatever"),
+#                                                      Email(message="Invalid email input.")])
+#     submit = SubmitField('Register Me!')
 
     def validate_username(self, user):
         if User.query.filter(User.user_name == user.data).first():

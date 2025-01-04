@@ -1,9 +1,11 @@
 from flask import flash, redirect, render_template, url_for
-from flask_login import current_user
+from flask_login import login_user, logout_user, login_required, current_user
 from ..models import db,User
+from ..main.forms import LoginForm
 from iGame import oauth
 import os
 from . import auth
+
 
 """
 
@@ -19,7 +21,7 @@ google = oauth.register(
     authorize_params=None,
     api_base_url='https://www.googleapis.com/oauth2/v1/',
     client_kwargs={
-        'scope': 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/user.birthday.read'},
+        'scope': 'https://www.googleapis.com/auth/userinfo.email'},
     server_metadata_url='https://accounts.google.com/.well-known/openid-configuration'
 )
 
@@ -29,14 +31,61 @@ def login():
     """
     view for user sso choices
     """
+    # form = LoginForm()
+    # if form.validate_on_submit():
+    #     user = db.session.query(User) \
+    #         .filter(User.user_name == form.username.data) \
+    #         .first()
+    #     if user is not None and user.verify_password(form.password.data):
+    #         """
+    #         the user query returns a Python object of the .first() user
+    #         it finds in db
+    #         """
+    #         login_user(user, form.remember.data)
+    #         session['bag'] = [g.to_dict() for g in db.session.query(Game).filter(and_(Game.user_id == current_user.id),
+    #                                                                              Game.likes == True).all()]
+    #
+    #         session['unbag'] = [g.to_dict() for g in
+    #                             db.session.query(Game).filter(and_(Game.user_id == current_user.id),
+    #                                                           Game.likes == False).all()]
+    #
+    #     flash('Invalid username or password.')\
     redirect_uri = url_for('auth._auth', _external=True)
     return oauth.google.authorize_redirect(redirect_uri)
 
-@auth.route('/auth')
+@auth.route('/auth', methods=['GET','POST'])
 def _auth():
+    """
+    create and set user object
+    after auth token returned from google
+    and checked in db
+    """
     # token = oauth.google.authorize_access_token()
     # print(token)
-    return redirect(url_for('main.home'))
+    # get user email
+    form = LoginForm()
+    # hash input
+    # compare to stored hash in db for username/email
+
+    email_hash = form.email.data
+    if form.validate_on_submit():
+        try:
+            user = db.session.query(User).filter(User.user_name == email_hash).first()
+        except Exception as e:  # to collect db errors
+            print(e)
+            user = None
+        if user:
+            login_user(user,remember = form.remember.data)
+        return redirect(url_for('main.home'))
+    return render_template('login.html',form=form)
+
+@auth.logout('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect((url_for('main.index')))
+
+
 
 
 # @auth.route('/register', methods=['GET', 'POST'])
