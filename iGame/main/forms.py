@@ -55,7 +55,7 @@ class GameSelections(FlaskForm):
 #                                                             message="Re-type email like: name@domain.whatever"),
 #                                                      Email(message="Invalid email input.")])
 #     submit = SubmitField('Register Me!')
-
-    def validate_username(self, user):
-        if User.query.filter(User.user_name == user.data).first():
-            raise ValidationError('Username is taken.')
+#
+#     def validate_username(self, user):
+#         if User.query.filter(User.user_name == user.data).first():
+#             raise ValidationError('Username is taken.')

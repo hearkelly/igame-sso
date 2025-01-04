@@ -7,10 +7,10 @@ from functions import get_games, get_game_info, game_finder, \
     get_list, get_genres, get_themes, get_similar, get_platforms, get_filters, \
     get_game_names
 from . import main
-from .forms import GameForm, LoginForm, RegistrationForm, RatingForm, GameSelections
+from .forms import GameForm, RatingForm, GameSelections
 from ..models import User, Game, db
-from flask_login import login_user, logout_user, login_required, current_user
-from iGame import cache, oauth
+from flask_login import login_required, current_user
+from iGame import cache
 
 
 @main.route('/googleef9fe119bc4df3ad.html')
