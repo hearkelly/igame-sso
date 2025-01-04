@@ -60,8 +60,8 @@ def _auth():
     after auth token returned from google
     and checked in db
     """
-    # token = oauth.google.authorize_access_token()
-    # print(token)
+    token = oauth.google.authorize_access_token()
+    print(token)
     # get user email
     form = LoginForm()
     # hash input
