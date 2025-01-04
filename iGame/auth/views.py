@@ -79,7 +79,7 @@ def _auth():
         return redirect(url_for('main.home'))
     return render_template('login.html',form=form)
 
-@auth.logout('/logout')
+@auth.route('/logout')
 @login_required
 def logout():
     logout_user()

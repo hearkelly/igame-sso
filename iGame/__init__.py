@@ -29,17 +29,13 @@ def create_app(config_name: str):
     modal.init_app(app)
     cache.init_app(app)
     oauth.init_app(app)
-    print(type(app))
+
     from iGame.models import db
     db.init_app(app)
     migrate.init_app(app, db)
 
     from .main import main as main_bp
-    print(type(main_bp))
-    try:
-        from .auth import auth as auth_bp
-    except Exception as e:
-        print(e)
+    from .auth import auth as auth_bp
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
 
