@@ -3,11 +3,10 @@ from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import OperationalError,TimeoutError,DBAPIError
 from ..models import db,User
 from ..main.forms import LoginForm
-from iGame import oauth, serializer
+from iGame import oauth
 import os
 from . import auth
 import requests
-import json
 from utilities import hash_email,get_jwt_claims,get_email_from_claims, validate_email
 
 
