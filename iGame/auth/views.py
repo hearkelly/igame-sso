@@ -1,5 +1,6 @@
 from flask import abort,flash, redirect, render_template, session, url_for
 from flask_login import login_user, logout_user, login_required, current_user
+from sqlalchemy.exc import OperationalError,TimeoutError,DBAPIError
 from ..models import db,User
 from ..main.forms import LoginForm
 from iGame import oauth, serializer
@@ -81,28 +82,30 @@ def _auth():
     after auth token returned from google
     and checked in db
     """
-    print("got to auth")
     token = oauth.google.authorize_access_token()
     claims = get_jwt_claims(os.environ.get('GOOGLE_ID'),token['id_token'])
-    print(claims)
     email = get_email_from_claims(claims)    # return string or None otherwise
-    print(email)
-    if email and validate_email(email):
-        hashed = hash_email(email)
-    else:
-        hashed,email = None,None
 
-    if hashed:
+    if email and validate_email(email):
+        email_hash = hash_email(email)
+    else:
+        email_hash,email = None,None
+
+    if email_hash:
         try:
-            user = db.session.query(User).filter(User.user_email == email).first()
-        except Exception as e:  # to collect db errors
-            user = None
-        if user is None:  # valid sso but not in db, so add and login
-            session['email'] = serializer.dumps(email)
+            user = db.session.query(User).filter(User.email_hash == email_hash).first()
+            login_user(user, remember=session.get('set_remember') or False)
+            return redirect(url_for('main.home'))
+        except (OperationalError, TimeoutError, DBAPIError) as e:
+            flash(f"{e}",category='connection error')
+            return render_template('404.html')
+            # TODO: create route/views/error handlers for 404,500
+        except Exception as e:
+            print(e)
+            flash('Email verified but not registered with us.')
+            session['email'] = email_hash
             return redirect(url_for('auth.register'))
-        login_user(user,remember=session.get('set_remember') or False)
-        return redirect(url_for('main.home'))
-    flash('Email invalid')
+    flash('Submitted email address is unverified and/or invalid.')
     return redirect(url_for('auth.login'))
 
 @auth.route('/logout')
@@ -120,12 +123,7 @@ def register():
         flash('Seems like you are registered and logged in. Log out to register a new account.')
         return redirect(url_for('main.home'))
 
-    try:
-        email = serializer.loads(session.get('email'))
-    except:
-        flash('could not load verified email. verify through sso')
-        email = None
-        return redirect(url_for('auth.login'))
+    email = session['email']
     if email:
         try:
             new = User(email)
@@ -135,6 +133,8 @@ def register():
         try:
             db.session.add(new)
             db.session.commit()
+            login_user(new, remember=session.get('set_remember') or False)
+            return redirect(url_for('main.home'))
         except Exception as e:
             print(e)  # log as error
             flash("Registration failed. Please try again.")

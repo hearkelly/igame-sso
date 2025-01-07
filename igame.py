@@ -1,6 +1,6 @@
 """
-HEROKU-22 DYNO RUNS *THIS* FILE
-STACK INFO: https://devcenter.heroku.com/articles/heroku-22-stack
+ENTRY FILE
+HEROKU STACK INFO: https://devcenter.heroku.com/articles/heroku-22-stack
 """
 
 import os
