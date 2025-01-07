@@ -3,6 +3,9 @@ from authlib.jose import JsonWebToken
 import requests
 
 #@cache.memoize(timeout=2592000) # 1 month caching of google jwt keys
+# error with caching:
+# redis.exceptions.ConnectionError: Error 1 connecting to ec2-3-220-59-62.compute-1.amazonaws.com:16710.
+# [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1007).
 def get_google_jwks():
     try:
         rq = "https://www.googleapis.com/oauth2/v3/certs"  # google key uri
@@ -15,6 +18,7 @@ def get_google_jwks():
 
 def get_jwt_claims(client_id:str, token:str, claims=None):  # decode, validate, and return
     keys = get_google_jwks()
+    print(keys)
     if keys:
         try:
             jwt_processor = JsonWebToken(['RS256'])
