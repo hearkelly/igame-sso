@@ -10,7 +10,7 @@ db = SQLAlchemy()
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
-    email_hash = db.Column(db.String(32), nullable=False)  # encrypted email
+    email_hash = db.Column(db.String(32), nullable=False, default='')  # encrypted email
     created_on = db.Column(db.DateTime(), default=datetime.now)
 
     def __init__(self, email: str):
