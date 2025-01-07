@@ -81,6 +81,7 @@ def _auth():
     after auth token returned from google
     and checked in db
     """
+    print("got to auth")
     token = oauth.google.authorize_access_token()
     claims = get_jwt_claims(os.environ.get('GOOGLE_ID'),token)
     email = get_email_from_claims(claims)    # return string or None otherwise
