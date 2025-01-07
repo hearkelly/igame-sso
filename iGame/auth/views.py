@@ -2,7 +2,7 @@ from flask import abort,flash, redirect, render_template, session, url_for
 from flask_login import login_user, logout_user, login_required, current_user
 from ..models import db,User
 from ..main.forms import LoginForm
-from iGame import oauth
+from iGame import oauth, serializer
 import os
 from . import auth
 import requests
@@ -87,16 +87,16 @@ def _auth():
     if email and validate_email(email):
         hashed = hash_email(email)
     else:
-        hashed = None
+        hashed,email = None,None
         
     if hashed:
         try:
             user = db.session.query(User).filter(User.user_email == email).first()
         except Exception as e:  # to collect db errors
             user = None
-        if user is None:
-            # REGISTER
-            pass
+        if user is None:  # valid sso but not in db, so add and login
+            session['email'] = serializer.dumps(email)
+            return redirect(url_for('auth.register'))
         login_user(user,remember=session.get('set_remember') or False)
         return redirect(url_for('main.home'))
     flash('Email invalid')
@@ -111,24 +111,30 @@ def logout():
 
 
 
-# @auth.route('/register', methods=['GET', 'POST'])
-# def register():
-#     # if current_user.is_authenticated:
-#     #     flash('Seems like you are registered and logged in. Log out to register a new account.')
-#     #     return redirect(url_for('main.home'))
-#     #
-#     # try:
-#     #     new = User(username, password, email)
-#     # except Exception as err:
-#     #     flash(message=f"Object Creation Error: {err}",category='error')  # log as error
-#     #     return render_template('404.html'), 404
-#     # try:
-#     #     db.session.add(new)
-#     #     db.session.commit()
-#     #     flash("Registered!")
-#     #     return redirect(url_for('main.index'))
-#     # except Exception as e:
-#     #     print(e)  # log as error
-#     #     flash("Registration failed. Please try again.")
-#     # return render_template('register.html', title="iGame - Registration")
-#     return redirect(url_for('main.home'))
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        flash('Seems like you are registered and logged in. Log out to register a new account.')
+        return redirect(url_for('main.home'))
+
+    try:
+        email = serializer.loads(session.get('email'))
+    except:
+        flash('could not load verified email. verify through sso')
+        email = None
+        return redirect(url_for('auth.login'))
+    if email:
+        try:
+            new = User(email)
+        except Exception as err:
+            flash(message=f"Object Creation Error: {err}",category='error')  # log as error
+            return render_template('404.html'), 404
+        try:
+            db.session.add(new)
+            db.session.commit()
+        except Exception as e:
+            print(e)  # log as error
+            flash("Registration failed. Please try again.")
+            abort(500)
+        return redirect(url_for('main.home'))
+    return redirect(url_for('auth.login'))

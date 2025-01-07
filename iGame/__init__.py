@@ -9,7 +9,7 @@ from flask_login import LoginManager
 from flask_modals import Modal
 from flask_talisman import Talisman
 from flask_wtf import CSRFProtect
-
+from itsdangerous import URLSafeSerializer
 from config import config
 
 bootstrap = Bootstrap5()
@@ -23,6 +23,7 @@ cache = Cache(config={
 migrate = Migrate()
 oauth = OAuth()
 csrf = CSRFProtect()
+serializer = URLSafeSerializer(os.environ.get('SECRET_KEY'))
 
 def create_app(config_name: str):
     # create and configure the app
