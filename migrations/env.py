@@ -1,6 +1,6 @@
 import logging
 from logging.config import fileConfig
-
+import os
 from flask import current_app
 
 from alembic import context
@@ -63,6 +63,9 @@ def run_migrations_offline():
     script output.
 
     """
+    database_url = 'postgres://ufk70k4a6gg35d:p92f3a5c29b8130ec24aad31766be1e4e5ad7dc2d8f1647db393e73b97eb6be29@ca75ohcr08rhfe.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d2p0fine3r6avv'
+    config.set_main_option(
+        'sqlalchemy.url', database_url)
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
         url=url, target_metadata=get_metadata(), literal_binds=True
@@ -95,7 +98,9 @@ def run_migrations_online():
         conf_args["process_revision_directives"] = process_revision_directives
 
     connectable = get_engine()
-
+    database_url = os.environ.get('DATABASE_URL') or current_app.config.get('SQLALCHEMY_DATABASE_URI')
+    config.set_main_option(
+        'sqlalchemy.url', database_url)
     with connectable.connect() as connection:
         context.configure(
             connection=connection,

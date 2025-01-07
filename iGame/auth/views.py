@@ -1,14 +1,14 @@
-from flask import abort,flash, redirect, render_template, session, url_for
+from flask import abort, flash, redirect, render_template, session, url_for
 from flask_login import login_user, logout_user, login_required, current_user
-from sqlalchemy.exc import OperationalError,TimeoutError,DBAPIError
-from ..models import db,User
+from sqlalchemy.exc import OperationalError, TimeoutError, DBAPIError
+from sqlalchemy import and_
+from ..models import User, Game, db
 from ..main.forms import LoginForm
 from iGame import oauth
 import os
 from . import auth
 import requests
-from utilities import hash_email,get_jwt_claims,get_email_from_claims, validate_email
-
+from utilities import hash_email, get_jwt_claims, get_email_from_claims, validate_email
 
 """
 
@@ -29,7 +29,7 @@ google = oauth.register(
 )
 
 
-@auth.route('/login', methods=['GET','POST'])
+@auth.route('/login', methods=['GET', 'POST'])
 def login():
     """
     form view for user-sso options and redirects
@@ -46,12 +46,7 @@ def login():
     #         it finds in db
     #         """
     #         login_user(user, form.remember.data)
-    #         session['bag'] = [g.to_dict() for g in db.session.query(Game).filter(and_(Game.user_id == current_user.id),
-    #                                                                              Game.likes == True).all()]
-    #
-    #         session['unbag'] = [g.to_dict() for g in
-    #                             db.session.query(Game).filter(and_(Game.user_id == current_user.id),
-    #                                                           Game.likes == False).all()]
+
     #
     #     flash('Invalid username or password.')\
     """
@@ -62,19 +57,20 @@ def login():
     if not submitted:
     render_template(login)
     """
-    form=LoginForm()
+    form = LoginForm()
 
     if form.validate_on_submit():
-        session['set_remember']: bool= form.remember.data or False
+        session['set_remember']: bool = form.remember.data or False
         redirect_uri = url_for('auth._auth', _external=True)
         if form.github.data:
             return redirect(redirect_uri)  # TODO: configure github sso
         else:
             return oauth.google.authorize_redirect(redirect_uri)
 
-    return render_template('login.html',form=form)
+    return render_template('login.html', form=form)
 
-@auth.route('/auth', methods=['GET','POST'])
+
+@auth.route('/auth', methods=['GET', 'POST'])
 def _auth():
     """
     create and set user object
@@ -82,21 +78,26 @@ def _auth():
     and checked in db
     """
     token = oauth.google.authorize_access_token()
-    claims = get_jwt_claims(os.environ.get('GOOGLE_ID'),token['id_token'])
-    email = get_email_from_claims(claims)    # return string or None otherwise
+    claims = get_jwt_claims(os.environ.get('GOOGLE_ID'), token['id_token'])
+    email = get_email_from_claims(claims)  # return string or None otherwise
 
     if email and validate_email(email):
         email_hash = hash_email(email)
     else:
-        email_hash,email = None,None
+        email_hash, email = None, None
 
     if email_hash:
         try:
             user = db.session.query(User).filter(User.email_hash == email_hash).first()
             login_user(user, remember=session.get('set_remember') or False)
+            session['bag'] = [g.to_dict() for g in db.session.query(Game).filter(and_(Game.user_id == current_user.id),
+                                                                                 Game.likes == True).all()]
+            session['unbag'] = [g.to_dict() for g in
+                                db.session.query(Game).filter(and_(Game.user_id == current_user.id),
+                                                              Game.likes == False).all()]
             return redirect(url_for('main.home'))
         except (OperationalError, TimeoutError, DBAPIError) as e:
-            flash(f"{e}",category='connection error')
+            flash(f"{e}", category='connection error')
             return render_template('404.html')
             # TODO: create route/views/error handlers for 404,500
         except Exception as e:
@@ -107,13 +108,15 @@ def _auth():
     flash('Submitted email address is unverified and/or invalid.')
     return redirect(url_for('auth.login'))
 
+
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect((url_for('main.index')))
-# TODO: work on main.index splash
 
+
+# TODO: work on main.index splash
 
 
 @auth.route('/register', methods=['GET', 'POST'])
@@ -127,12 +130,17 @@ def register():
         try:
             new = User(email)
         except Exception as err:
-            flash(message=f"Object Creation Error: {err}",category='error')  # log as error
+            flash(message=f"Object Creation Error: {err}", category='error')  # log as error
             return render_template('404.html'), 404
         try:
             db.session.add(new)
             db.session.commit()
             login_user(new, remember=session.get('set_remember') or False)
+            session['bag'] = [g.to_dict() for g in db.session.query(Game).filter(and_(Game.user_id == current_user.id),
+                                                                                 Game.likes == True).all()]
+            session['unbag'] = [g.to_dict() for g in
+                                db.session.query(Game).filter(and_(Game.user_id == current_user.id),
+                                                              Game.likes == False).all()]
             return redirect(url_for('main.home'))
         except Exception as e:
             print(e)  # log as error
