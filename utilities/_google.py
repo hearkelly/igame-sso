@@ -18,7 +18,6 @@ def get_google_jwks():
 
 def get_jwt_claims(client_id:str, token:str, claims=None):  # decode, validate, and return
     keys = get_google_jwks()
-    print(keys)
     if keys:
         try:
             jwt_processor = JsonWebToken(['RS256'])

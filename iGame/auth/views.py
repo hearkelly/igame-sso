@@ -83,8 +83,7 @@ def _auth():
     """
     print("got to auth")
     token = oauth.google.authorize_access_token()
-    print(token)
-    claims = get_jwt_claims(os.environ.get('GOOGLE_ID'),token)
+    claims = get_jwt_claims(os.environ.get('GOOGLE_ID'),token['id_token'])
     print(claims)
     email = get_email_from_claims(claims)    # return string or None otherwise
     print(email)
