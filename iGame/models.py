@@ -1,7 +1,6 @@
 from datetime import datetime
 from sqlalchemy_serializer import SerializerMixin
 from flask_sqlalchemy import SQLAlchemy
-from functions import hash_pass
 from flask_login import UserMixin
 from . import login_manager
 
@@ -11,30 +10,16 @@ db = SQLAlchemy()
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
-    user_name = db.Column(db.String(50), nullable=False)
-    pass_hash = db.Column(db.String(40), nullable=False)
-    email = db.Column(db.String(150), nullable=False)
+    user_name = db.Column(db.String(50), nullable=False)  # encrypted email
     created_on = db.Column(db.DateTime(), default=datetime.now)
 
-    def __init__(self, username: str, password: str, email: str):
+    def __init__(self, username: str):
         self.user_name = username
-        self.password = password
-        self.email = email
-
-    @property
-    def password(self):
-        raise AttributeError('Password is not a readable attribute.')
-
-    @password.setter
-    def password(self, password):
-        self.pass_hash = hash_pass(password)
-
-    def verify_password(self, password):
-        return self.pass_hash == hash_pass(password)
 
 
 @login_manager.user_loader
 def load_user(user_id):
+    # TODO: wrap this in a try/except bc its contacting db ???
     return User.query.get(int(user_id))
 
 

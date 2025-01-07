@@ -3,7 +3,7 @@ import os
 from flask import flash, render_template, redirect, request, url_for, jsonify, session
 from sqlalchemy import and_
 from sqlalchemy.exc import SQLAlchemyError
-from functions import get_games, get_game_info, game_finder, \
+from utilities import get_games, get_game_info, game_finder, \
     get_list, get_genres, get_themes, get_similar, get_platforms, get_filters, \
     get_game_names
 from . import main

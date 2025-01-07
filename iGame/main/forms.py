@@ -15,9 +15,9 @@ class RatingForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    email = StringField('SET EMAIL', validators=[DataRequired(message="Choose a login method.")])
-    remember = BooleanField('SET LOGIN DURATION: 1 year')
-    submit = SubmitField('submit request')
+    remember = BooleanField('STAY LOGGED IN')
+    github = SubmitField('github sso')
+    google = SubmitField('google sso')
 
 
 class GameForm(FlaskForm):

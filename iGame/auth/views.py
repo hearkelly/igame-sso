@@ -1,10 +1,13 @@
-from flask import flash, redirect, render_template, url_for
+from flask import abort,flash, redirect, render_template, session, url_for
 from flask_login import login_user, logout_user, login_required, current_user
 from ..models import db,User
 from ..main.forms import LoginForm
 from iGame import oauth
 import os
 from . import auth
+import requests
+import json
+from utilities import hash_email,get_jwt_claims,get_email_from_claims, validate_email
 
 
 """
@@ -26,12 +29,13 @@ google = oauth.register(
 )
 
 
-@auth.route('/login')
+@auth.route('/login', methods=['GET','POST'])
 def login():
     """
-    view for user sso choices
+    form view for user-sso options and redirects
     """
-    # form = LoginForm()
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
     # if form.validate_on_submit():
     #     user = db.session.query(User) \
     #         .filter(User.user_name == form.username.data) \
@@ -50,8 +54,25 @@ def login():
     #                                                           Game.likes == False).all()]
     #
     #     flash('Invalid username or password.')\
-    redirect_uri = url_for('auth._auth', _external=True)
-    return oauth.google.authorize_redirect(redirect_uri)
+    """
+    form with google / github options, plus REMEMBER ME
+    once form is submitted:
+    update set_remember cookie
+    generate the redirect uri, and return oauth for selected sso
+    if not submitted:
+    render_template(login)
+    """
+    form=LoginForm()
+
+    if form.validate_on_submit():
+        session['set_remember']: bool= form.remember.data or False
+        redirect_uri = url_for('auth._auth', _external=True)
+        if form.github.data:
+            return redirect(redirect_uri)  # TODO: configure github sso
+        else:
+            return oauth.google.authorize_redirect(redirect_uri)
+
+    return render_template('login.html',form=form)
 
 @auth.route('/auth', methods=['GET','POST'])
 def _auth():
@@ -61,30 +82,38 @@ def _auth():
     and checked in db
     """
     token = oauth.google.authorize_access_token()
-    print(token)
-    # get user email
-    form = LoginForm()
-    # hash input
-    # compare to stored hash in db for username/email
-
-    email_hash = form.email.data
-    if form.validate_on_submit():
+    claims = get_jwt_claims(os.environ.get('GOOGLE_ID'),token)
+    # before hashing email, let's make sure the return str == regex for email
+    email = get_email_from_claims(claims)    # return string or None otherwise
+    if email and validate_email(email):
+        hashed = hash_email(email)
+    else:
+        hashed = None
+    # form = LoginForm()  # can i set email here ??
+    # # hash input
+    # # compare to stored hash in db for username/email
+    #
+    # if form.validate_on_submit():
+    #     email_hash = form.email.data
+    if hashed:
         try:
-            user = db.session.query(User).filter(User.user_name == email_hash).first()
+            user = db.session.query(User).filter(User.user_email == email).first()
         except Exception as e:  # to collect db errors
-            print(e)
             user = None
-        if user:
-            login_user(user,remember = form.remember.data)
+        if user is None:
+            # REGISTER
+            pass
+        login_user(user,remember=session.get('set_remember') or False)
         return redirect(url_for('main.home'))
-    return render_template('login.html',form=form)
+    flash('Email invalid')
+    return redirect(url_for('auth.login'))
 
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect((url_for('main.index')))
-
+# TODO: work on main.index splash
 
 
 

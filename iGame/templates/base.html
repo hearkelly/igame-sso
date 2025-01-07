@@ -23,6 +23,7 @@
 
     <body>
         {% block content %}
+            {{ csrf_token() }}
             <div class="container">
                 {% with messages = get_flashed_messages() %}
                 {% if messages %}
