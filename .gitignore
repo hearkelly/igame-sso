@@ -17,7 +17,6 @@ build/
 
 *.env
 
-messing.py
 .vscode/
 Dockerfile
 docker-compose.yml
