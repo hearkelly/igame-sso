@@ -13,6 +13,11 @@ from flask_login import login_required, current_user
 from iGame import cache
 
 
+"""
+idea
+TODO: CUSTOM DECORATOR to check num of games > 5; if not, send to main.gameForm
+"""
+
 @main.route('/googleef9fe119bc4df3ad.html')
 def google_verify():
     return render_template("googleef9fe119bc4df3ad.html")
