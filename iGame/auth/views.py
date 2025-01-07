@@ -84,11 +84,12 @@ def _auth():
     token = oauth.google.authorize_access_token()
     claims = get_jwt_claims(os.environ.get('GOOGLE_ID'),token)
     email = get_email_from_claims(claims)    # return string or None otherwise
+    print(email)
     if email and validate_email(email):
         hashed = hash_email(email)
     else:
         hashed,email = None,None
-        
+
     if hashed:
         try:
             user = db.session.query(User).filter(User.user_email == email).first()
