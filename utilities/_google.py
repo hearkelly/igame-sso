@@ -2,7 +2,7 @@ from iGame import cache
 from authlib.jose import JsonWebToken
 import requests
 
-@cache.memoize(timeout=2592000) # 1 month caching of google jwt keys
+#@cache.memoize(timeout=2592000) # 1 month caching of google jwt keys
 def get_google_jwks():
     try:
         rq = "https://www.googleapis.com/oauth2/v3/certs"  # google key uri
