@@ -14,6 +14,8 @@ from flask_wtf import CSRFProtect
 from config import config
 from urllib.parse import urlparse
 
+from cachelib.redis import RedisCache
+
 url = urlparse(os.environ.get("REDIS_URL"))
 r = redis.Redis(host=url.hostname, port=url.port, password=url.password, ssl=(url.scheme == "rediss"), ssl_cert_reqs=None)
 print(r.ping())
@@ -45,7 +47,11 @@ def create_app(config_name: str):
     bootstrap.init_app(app)
     login_manager.init_app(app)
     modal.init_app(app)
-    cache.init_app(app)
+
+    cache.init_app(app, config={
+        'CACHE_TYPE': 'RedisCache'
+    })
+    cache._cache = RedisCache(r)
     oauth.init_app(app)
     csrf.init_app(app)
 
