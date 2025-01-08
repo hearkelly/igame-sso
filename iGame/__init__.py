@@ -16,7 +16,7 @@ from urllib.parse import urlparse
 
 url = urlparse(os.environ.get("REDIS_URL"))
 r = redis.Redis(host=url.hostname, port=url.port, password=url.password, ssl=(url.scheme == "rediss"), ssl_cert_reqs=None)
-
+print(r.ping())
 bootstrap = Bootstrap5()
 modal = Modal()
 login_manager = LoginManager()
