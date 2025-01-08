@@ -1,8 +1,10 @@
 import os
+import redis
 
 from authlib.integrations.flask_client import OAuth
 from flask import Flask
 from flask_migrate import Migrate
+from flask_caching.backends import RedisCache
 from flask_caching import Cache
 from flask_bootstrap import Bootstrap5
 from flask_login import LoginManager
@@ -11,6 +13,10 @@ from flask_talisman import Talisman
 from flask_wtf import CSRFProtect
 from config import config
 
+# custom Redis for self-signed certs error
+redis_client = redis.StrictRedis(
+    ssl_cert_reqs=None
+)
 bootstrap = Bootstrap5()
 modal = Modal()
 login_manager = LoginManager()
@@ -20,6 +26,7 @@ cache = Cache(config={
     'CACHE_REDIS_URL': os.environ.get('REDIS_URL'),
     'CACHE_REDIS_TLS': True,
     'CACHE_OPTIONS':{"ssl_certs_reqs": None}})
+cache._cache = redis_client
 migrate = Migrate()
 oauth = OAuth()
 csrf = CSRFProtect()
