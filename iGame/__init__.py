@@ -18,7 +18,8 @@ login_manager.login_view = 'auth.login'
 cache = Cache(config={
     'CACHE_TYPE': 'RedisCache',
     'CACHE_REDIS_URL': os.environ.get('REDIS_URL'),
-    'CACHE_REDIS_TLS': True})
+    'CACHE_REDIS_TLS': True,
+    'CACHE_OPTIONS':{"ssl_certs_reqs": None}})
 migrate = Migrate()
 oauth = OAuth()
 csrf = CSRFProtect()
