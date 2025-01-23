@@ -69,7 +69,7 @@ def delete(gameID):
 
 @main.route('/')
 def index():
-    print("Accessing root route. Is user authenticated? ", current_user.is_authenticated)
+    main.logger.info("Accessing root route. Is user authenticated? ", current_user.is_authenticated)
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
     return redirect((url_for('auth.login')))
