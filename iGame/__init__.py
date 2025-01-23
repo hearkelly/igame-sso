@@ -55,6 +55,6 @@ def create_app(config_name: str):
     app.register_blueprint(auth_bp)
 
     if app.config['SSL_REDIRECT']:
-        Talisman(app, force_https=False,strict_transport_security=True,content_security_policy=None)
+        Talisman(app, content_security_policy=None)
 
     return app
