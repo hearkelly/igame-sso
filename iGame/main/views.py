@@ -26,7 +26,7 @@ views.py NOTES:
 @main.before_request
 def log_request():
     print(f"Request to {request.path}")
-    
+
 @main.route('/googleef9fe119bc4df3ad.html')
 def google_verify():
     return render_template("googleef9fe119bc4df3ad.html")
