@@ -15,9 +15,9 @@ class RatingForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    remember = BooleanField('STAY LOGGED IN')
-    github = SubmitField('github sso')
-    google = SubmitField('google sso')
+    remember = BooleanField('stay')
+    github = SubmitField('github')
+    google = SubmitField('google')
 
 
 class GameForm(FlaskForm):

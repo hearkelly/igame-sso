@@ -1,13 +1,13 @@
 import os
 import json
-from iGame import cache
+# from iGame import cache
 from igdb.wrapper import IGDBWrapper
 from more_itertools import collapse
 import requests
 
 WRAPPER = IGDBWrapper(os.environ.get('TWITCH_ID'), os.environ.get('IGDB_TOKEN'))
 
-@cache.memoize(timeout=1209600)
+# @cache.memoize(timeout=1209600)
 def get_games(term: str):
     """
     returns list of games with id, name, platforms
@@ -52,7 +52,7 @@ def get_game_names(games):
         namedGames.append({'id': id_, 'name': name, 'rating': rating})
     return namedGames
 
-@cache.memoize(timeout=1209600)
+# @cache.memoize(timeout=1209600)
 def get_game_info(id_: int):
     # cover, platforms, age rating, mode, genres, themes, rating, summary
     try:
@@ -69,7 +69,7 @@ def get_game_info(id_: int):
         return None
 
 
-@cache.memoize(timeout=1209600)
+# @cache.memoize(timeout=1209600)
 def game_finder(selectPlatformCategory=(), selectPlatformFamily=(), selectThemes=(), selectGenres=(), selectModes=()):
     rqString = 'f name, cover.url, summary,storyline,screenshots.url,age_ratings.synopsis,game_modes.name,genres.name, platforms.category, platforms.platform_family, rating,themes.name; where rating != null'
     if len(selectPlatformCategory) > 1:
@@ -127,7 +127,7 @@ def game_finder(selectPlatformCategory=(), selectPlatformFamily=(), selectThemes
     return gameList
 
 
-@cache.memoize(timeout=1209600)
+# @cache.memoize(timeout=1209600)
 def get_list(games, plats, hiGen, noGen, hiThm, noThm):
     rqString = 'f name, cover.url, summary,storyline,screenshots.url,age_ratings.synopsis,game_modes.name,genres.name, platforms.name,rating,themes.name;'
     if len(games) > 1:
@@ -189,7 +189,7 @@ def get_list(games, plats, hiGen, noGen, hiThm, noThm):
     return gameList, tuple(similar)
 
 
-@cache.memoize(timeout=1209600)
+# @cache.memoize(timeout=1209600)
 def get_genres(games: list):
     if len(games) > 1:
         games = tuple(games)
@@ -205,7 +205,7 @@ def get_genres(games: list):
         return None
 
 
-@cache.memoize(timeout=1209600)
+# @cache.memoize(timeout=1209600)
 def get_themes(games: list):
     if len(games) > 1:
         games = tuple(games)
@@ -221,7 +221,7 @@ def get_themes(games: list):
         return None
 
 
-@cache.memoize(timeout=1209600)
+# @cache.memoize(timeout=1209600)
 def get_similar(games: list):
     if len(games) > 1:
         games = tuple(games)
@@ -239,7 +239,7 @@ def get_similar(games: list):
         return None
 
 
-@cache.memoize(timeout=1209600)
+# @cache.memoize(timeout=1209600)
 def get_platforms(games: list):
     if len(games) > 1:
         games = tuple(games)
@@ -255,7 +255,7 @@ def get_platforms(games: list):
         return None
 
 
-@cache.memoize(timeout=1209600)
+# @cache.memoize(timeout=1209600)
 def get_filters():
     # platforms = []
     # rq = WRAPPER.api_request('platforms', 'f name; limit 500; sort id asc;')

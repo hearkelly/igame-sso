@@ -3,25 +3,26 @@
     <head>
         {% block head %}
             <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
             <script src="https://kit.fontawesome.com/d5b6c3e86b.js" crossorigin="anonymous"></script>
 
         {% block styles %}
-            {{ bootstrap.load_css() }}
             <link rel="preconnect" href="https://fonts.googleapis.com">
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
             <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Condensed&family=Ubuntu+Mono:ital,wght@0,700;1,700&family=Ubuntu:ital,wght@0,500;0,700;1,500;1,700&family=VT323&display=swap" rel="stylesheet">
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
             <link href="https://unpkg.com/nes.icons@latest/css/nes-icons.min.css" rel="stylesheet" />
             <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-            <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+            <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
         {% endblock %}
 
-        <title>{{ title }}</title>
+        <title>{{ title if title else 'playagame . thruyourfeet'}}</title>
         {% endblock %}
     </head>
 
-    <body>
+    <body class="bg-red-light">
         {% block content %}
             <div class="container">
                 {% with messages = get_flashed_messages() %}
@@ -41,7 +42,6 @@
 
         {% endblock %}
         {% block scripts %}
-            {{ bootstrap.load_js() }}
             <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
             <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
         {% endblock %}

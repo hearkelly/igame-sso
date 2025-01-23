@@ -1,4 +1,4 @@
-import os
+# import os
 
 from flask import flash, render_template, redirect, request, url_for, jsonify, session
 from sqlalchemy import and_
@@ -8,14 +8,20 @@ from utilities import get_games, get_game_info, game_finder, \
     get_game_names
 from . import main
 from .forms import GameForm, RatingForm, GameSelections
-from ..models import User, Game, db
+from ..models import Game, db
 from flask_login import login_required, current_user
-from iGame import cache
+# from iGame import cache
 
 
 """
 idea
-TODO: CUSTOM DECORATOR to check num of games > 5; if not, send to main.gameForm
+TODO:
+    CREATE custom route decorator to check num of games > 5; if not, send to main.gameForm
+    CHANGE how we access user games, currently: session['bag']
+
+views.py NOTES:
+    current_user available; full access to User object not needed here
+    use global current_user to access user attributes like: id
 """
 
 @main.route('/googleef9fe119bc4df3ad.html')
@@ -90,7 +96,7 @@ def home():
 
 @main.route('/gameForm', methods=['GET', 'POST'])
 @login_required
-@cache.cached()
+# @cache.cached()
 def gameForm():
     """
     to collect 5 games: 3 likes, 2 dislikes
@@ -117,7 +123,7 @@ def gameForm():
 
 @main.route('/gameForm2', methods=['GET', 'POST'])
 @login_required
-@cache.cached()
+# @cache.cached()
 def gameForm2():
     form = GameSelections()
     games = session.get('options')
@@ -177,7 +183,7 @@ def bag():
 
 @main.route('/gameFinder/<id_>')
 @login_required
-@cache.cached(timeout=600)
+# @cache.cached(timeout=600)
 def game(id_):
     """
     :param id_:
@@ -258,7 +264,7 @@ def user():
     return '<h1>User Details</h1>'
 
 
-@cache.memoize(timeout=300)
+# @cache.memoize(timeout=300)
 def get_recs(bagGames, unbagGames):
     hiGenre = get_genres(bagGames)
     noGenre = get_genres(unbagGames)

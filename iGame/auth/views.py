@@ -1,4 +1,4 @@
-from flask import abort, flash, redirect, render_template, session, url_for
+from flask import abort, flash, redirect, render_template, session, url_for, request
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import OperationalError, TimeoutError, DBAPIError
 from sqlalchemy import and_
@@ -36,19 +36,6 @@ def login():
     """
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
-    # if form.validate_on_submit():
-    #     user = db.session.query(User) \
-    #         .filter(User.user_name == form.username.data) \
-    #         .first()
-    #     if user is not None and user.verify_password(form.password.data):
-    #         """
-    #         the user query returns a Python object of the .first() user
-    #         it finds in db
-    #         """
-    #         login_user(user, form.remember.data)
-
-    #
-    #     flash('Invalid username or password.')\
     """
     form with google / github options, plus REMEMBER ME
     once form is submitted:
@@ -67,7 +54,7 @@ def login():
         else:
             return oauth.google.authorize_redirect(redirect_uri)
 
-    return render_template('login.html', form=form)
+    return render_template('index.html', form=form)
 
 
 @auth.route('/auth', methods=['GET', 'POST'])

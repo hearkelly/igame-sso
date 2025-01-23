@@ -1,6 +1,55 @@
 {% extends 'base.html' %}
-{% import "bootstrap5/form.html" as wtf %}
 
 {% block page_content %}
-Login with Google? <a href="{{ url_for('auth.login') }}">HERE</a>
+    <header><a href="https://www.flaticon.com/free-icons/jigsaw" title="jigsaw icons">Jigsaw icons created by Sergei
+        Kokota - Flaticon</a></header>
+    <section class="h-screen flex flex-col items-center justify-center">
+
+        <div class="w-full mx-auto overflow-hidden">
+            <h1 class="font-display px-0 mt-3 mb-4 text-[32px] text-center tracking-tight leading-none text-white md:text-[40px] lg:text-5xl">
+                PLAY A GAME</h1>
+        </div>
+        <div class="mb-0 w-5/6 max-w-xl aspect-square mx-auto overflow-hidden bg-white flex flex-col">
+            <div class="flex flex-col justify-end flex-1 bg-[url('/static/images/jigsaw-drop.png')] bg-contain bg-center bg-no-repeat">
+                <form action="{{ url_for('auth.login') }}" id="LoginForm" method="POST" autocomplete="off" class="">
+                    {{ form.hidden_tag() }}
+                    <div class="w-full flex px-6 justify-between">
+                        <button data-tooltip-target="tooltip-default" type="submit" name="github" value="1"
+                                class="hover:invert flex flex-col items-center">
+                            <img class="w-8 h-8 rounded-full object-cover"
+                                     src="{{ url_for('static', filename='images/github-mark.svg') }}" alt="Github Logo">
+
+                            {{ form.github.label(class="text-black text-xl font-semibold italic font-['IBM_Plex_Serif']") }}
+                        </button>
+                        <div class="text-center">
+                        {{ form.remember() }} &nbsp;
+                        {{ form.remember.label(class="text-black text-xl font-semibold italic font-['IBM_Plex_Serif']") }}
+                    </div>
+                        <button data-tooltip-target="tooltip-default" type="submit" name="google" value="1"
+                                class="hover:invert flex flex-col items-center">
+                            <img class="w-8 h-8 rounded-full object-cover"
+                                     src="{{ url_for('static', filename='images/google.png') }}" alt="Google Logo">
+
+                            {{ form.google.label(class="text-black text-xl font-semibold italic font-['IBM_Plex_Serif']") }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="mt-0 w-5/6 max-w-xl mx-auto overflow-hidden bg-white flex flex-col">
+            <div class="text-center pb-2">
+                <h1 class="pb-1 font-semibold text-black text-7xl leading-none sm:text-8xl md:text-9xl font-['IBM_Plex_Serif'] tracking-wide drop-shadow-[4px_0px_0px_#A8F788]">
+                    SIGN IN</h1>
+            </div>
+        </div>
+    </section>
+
+    <div class="fixed bottom-0 left-0 right-0 px-4 mx-auto text-center md:max-w-screen-md lg:max-w-screen-lg lg:px-36">
+        <span class="text-white font-semibold tracking-wider font-['IBM_Plex_Serif'] italic">RECOMMENDATION ENGINE</span>
+        <div class="flex flex-wrap justify-center items-center mt-4 sm:justify-between">
+            <div>200,000 + games</div>
+            <div>FREE</div>
+            <div>digital & analog platforms</div>
+        </div>
+    </div>
 {% endblock %}

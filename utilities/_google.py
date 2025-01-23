@@ -1,7 +1,20 @@
-from iGame import cache
+# from iGame import cache
 from authlib.jose import JsonWebToken
 import requests
+"""
+https://docs.authlib.org/en/latest/jose/jwt.html#jwt-payload-claims-validation
+REF - authlib
+https://github.com/authlib/demo-oauth-client/
+REF - Vuka
+https://www.youtube.com/watch?v=BfYsdNaHrps
+https://github.com/Vuka951/tutorial-code/tree/master/flask-google-oauth2
 
+https://www.youtube.com/watch?v=wctDfjx4xIw
+https://developers.google.com/identity/protocols/oauth2/web-server#python
+https://www.youtube.com/watch?v=fZLWO3_V06Q
+https://developers.google.com/identity/openid-connect/openid-connect#python
+https://www.youtube.com/watch?v=FKgJEfrhU1E
+"""
 #@cache.memoize(timeout=2592000) # 1 month caching of google jwt keys
 # error with caching:
 # redis.exceptions.ConnectionError: Error 1 connecting to ec2-3-220-59-62.compute-1.amazonaws.com:16710.

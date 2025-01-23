@@ -7,10 +7,10 @@
                             {{ form.remember(class="form-check-input") }} &nbsp;
                             {{ form.remember.label(class="form-check-label") }}
                         </div>
-                        <button type="submit" name="github">
+                        <button type="submit" name="{{ form.github.name }}" value="1">
                             {{ form.github.label() }}
                         </button>
-                        <button type="submit" name="google">
+                        <button type="submit" name="{{ form.google.name }}" value="1">
                             {{ form.google.label() }}
                         </button>
                     </form>

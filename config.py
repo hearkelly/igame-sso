@@ -1,6 +1,8 @@
 import os
-
-basedir = os.path.abspath(os.path.dirname(__file__))
+"""
+https://flask.palletsprojects.com/en/stable/config/
+"""
+# basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
@@ -70,4 +72,4 @@ config = {'development': DevelopmentConfig,
           'production': ProductionConfig,
           'heroku': HerokuConfig,
           'docker': DockerConfig,
-          'default': HerokuConfig}
+          'default': DevelopmentConfig}
