@@ -23,7 +23,10 @@ views.py NOTES:
     current_user available; full access to User object not needed here
     use global current_user to access user attributes like: id
 """
-
+@main.before_request
+def log_request():
+    print(f"Request to {request.path}")
+    
 @main.route('/googleef9fe119bc4df3ad.html')
 def google_verify():
     return render_template("googleef9fe119bc4df3ad.html")
@@ -64,7 +67,7 @@ def delete(gameID):
                       db.session.query(Game).filter(and_(Game.user_id == current_user.id, Game.likes == True)).all()]
     return redirect(url_for('main.bag'))
 
-@main.route('/', methods=['GET', 'POST'])
+@main.route('/')
 def index():
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
