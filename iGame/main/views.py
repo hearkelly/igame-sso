@@ -66,7 +66,12 @@ def delete(gameID):
     session['bag'] = [g.to_dict() for g in
                       db.session.query(Game).filter(and_(Game.user_id == current_user.id, Game.likes == True)).all()]
     return redirect(url_for('main.bag'))
-print("somewhere")
+
+@main.route('/debug', methods=['GET'])
+def debug_route():
+    print(f"Headers: {request.headers}")
+    return "Debugging"
+
 @main.route('/')
 def index():
     print("Accessing root route. Is user authenticated? ", current_user.is_authenticated)
