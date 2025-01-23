@@ -22,6 +22,7 @@ class DevelopmentConfig(Config):
 
 
 class ProductionConfig(Config):
+    DEBUG=False
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL').replace('postgres://', 'postgresql+psycopg2://')
 
     @classmethod
