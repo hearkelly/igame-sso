@@ -20,11 +20,11 @@ from iGame import create_app
 # with factory pattern, app has no explicit context
 app = create_app(os.environ.get('FLASK_CONFIG') or 'default')
 
-@app.before_request
-def log_request_info():
-    print(f"Request headers: {request.headers}")
-    print(f"Request scheme: {request.scheme}")
-    print(f"Full URL: {request.url}")
+# @app.before_request
+# def log_request_info():
+#     print(f"Request headers: {request.headers}")
+#     print(f"Request scheme: {request.scheme}")
+#     print(f"Full URL: {request.url}")
 
 #
 # TODO: MOVE TO PROCFILE command -> release: flask db upgrade (head?)

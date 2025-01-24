@@ -67,10 +67,14 @@ def delete(gameID):
                       db.session.query(Game).filter(and_(Game.user_id == current_user.id, Game.likes == True)).all()]
     return redirect(url_for('main.bag'))
 
-@main.route('/debug', methods=['GET'])
-def debug_route():
-    print(f"Headers: {request.headers}")
-    return "Debugging"
+@main.route("/debug")
+def debug():
+    return {
+        "X-Forwarded-Proto": request.headers.get("X-Forwarded-Proto"),
+        "is_secure": request.is_secure,
+        "url_scheme": request.url
+    }
+
 
 @main.route('/')
 def index():
