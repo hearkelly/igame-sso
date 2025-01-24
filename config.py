@@ -48,7 +48,7 @@ class HerokuConfig(ProductionConfig):
                                 x_host=1,
                                 x_port=1,
                                 x_prefix=1)
-        
+
         print(f"ProxyFix is applied: {isinstance(app.wsgi_app, ProxyFix)}")
 
         import logging
