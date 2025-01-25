@@ -47,7 +47,7 @@ class HerokuConfig(ProductionConfig):
                                 x_proto=1,
                                 x_host=1,
                                 x_port=1,
-                                x_prefix=1)
+                                x_prefix=0)
 
         print(f"ProxyFix is applied: {isinstance(app.wsgi_app, ProxyFix)}")
 
