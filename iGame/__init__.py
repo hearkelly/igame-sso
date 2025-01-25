@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 # from flask_caching.backends import RedisCache
 # from flask_caching import Cache
 from flask_login import LoginManager
-from flask_talisman import Talisman
+# from flask_talisman import Talisman
 from flask_sslify import SSLify
 # TODO: configure flask_talisman or Flask SSLify
 from flask_wtf import CSRFProtect
