@@ -8,7 +8,7 @@ FLASK version 3.1.0
 
 import os
 from dotenv import load_dotenv
-from flask import request
+from flask import request, redirect
 # generates path to .env file and loads if present
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 if os.path.exists(dotenv_path):
@@ -19,6 +19,12 @@ from iGame import create_app
 # beloved app object, context?
 # with factory pattern, app has no explicit context
 app = create_app(os.environ.get('FLASK_CONFIG') or 'default')
+
+@app.before_request
+def force_https():
+    if not request.is_secure and not app.debug:
+        url = request.url.replace("http://", "https://", 1)
+        return redirect(url, code=301)
 
 # @app.before_request
 # def log_request_info():

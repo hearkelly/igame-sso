@@ -8,7 +8,7 @@ from flask_migrate import Migrate
 # from flask_caching import Cache
 from flask_login import LoginManager
 # from flask_talisman import Talisman
-from flask_sslify import SSLify
+# from flask_sslify import SSLify
 # TODO: configure flask_talisman or Flask SSLify
 from flask_wtf import CSRFProtect
 from config import config
@@ -55,7 +55,7 @@ def create_app(config_name: str):
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
 
-    if app.config['SSL_REDIRECT']:
-        sslify = SSLify(app)
+    # if app.config['SSL_REDIRECT']:
+    #     sslify = SSLify(app)
 
     return app
