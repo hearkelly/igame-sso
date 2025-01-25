@@ -22,6 +22,7 @@ app = create_app(os.environ.get('FLASK_CONFIG') or 'default')
 
 @app.before_request
 def force_https():
+    print("enforcing")
     if not request.is_secure and not app.debug:
         url = request.url.replace("http://", "https://", 1)
         return redirect(url, code=301)
