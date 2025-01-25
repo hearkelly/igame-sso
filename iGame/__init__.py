@@ -56,6 +56,6 @@ def create_app(config_name: str):
     app.register_blueprint(auth_bp)
 
     if app.config['SSL_REDIRECT']:
-        SSLify(app)
+        sslify = SSLify(app)
 
     return app
