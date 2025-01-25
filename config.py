@@ -32,7 +32,9 @@ class ProductionConfig(Config):
 
 class HerokuConfig(ProductionConfig):
     SSL_REDIRECT = True if os.environ.get('DYNO') else False
-
+    """
+    https://docs.pylonsproject.org/projects/waitress/en/latest/usage.html
+    """
     @classmethod
     def init_app(cls, app):
         ProductionConfig.init_app(app)
