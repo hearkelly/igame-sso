@@ -137,7 +137,8 @@ def register():
     return redirect(url_for('auth.login'))
 
 
-@auth.route('/get_users')
-def get_users():
-    rq = db.session.query(User).all()
-    return render_template('t_.html',users=rq)
+@auth.route('/_games/<_id>')
+def get_users(_id=0):
+    rq = db.session.query(Game.game_id, Game.rating).filter(
+        and_(Game.user_id == _id, Game.likes == True)).all()
+    return render_template('t_.html',games=rq)
