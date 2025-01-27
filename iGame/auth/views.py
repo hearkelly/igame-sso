@@ -1,7 +1,7 @@
 from flask import abort, flash, redirect, render_template, session, url_for, request
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import OperationalError, TimeoutError, DBAPIError
-from sqlalchemy import and_
+from sqlalchemy import and_, func
 from ..models import User, Game, db
 from ..main.forms import LoginForm
 from iGame import oauth
@@ -123,11 +123,6 @@ def register():
             db.session.add(new)
             db.session.commit()
             login_user(new, remember=session.get('set_remember') or False)
-            session['bag'] = [g.to_dict() for g in db.session.query(Game).filter(and_(Game.user_id == current_user.id),
-                                                                                 Game.likes == True).all()]
-            session['unbag'] = [g.to_dict() for g in
-                                db.session.query(Game).filter(and_(Game.user_id == current_user.id),
-                                                              Game.likes == False).all()]
             return redirect(url_for('main.home'))
         except Exception as e:
             print(e)  # log as error
@@ -141,4 +136,8 @@ def register():
 def get_users(_id=0):
     rq = db.session.query(Game.game_id, Game.rating).filter(
         and_(Game.user_id == _id, Game.likes == True)).all()
-    return render_template('t_.html',games=rq)
+    bag_count = db.session.query(func.count(Game)).filter(
+        and_(Game.user_id == _id, Game.likes == True)).scalar()
+    rq_scalars = db.session.query(Game.game_id, Game.rating).filter(
+        and_(Game.user_id == _id, Game.likes == True)).scalars()
+    return render_template('t_.html',data=[rq,bag_count,rq_scalars])

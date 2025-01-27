@@ -1,5 +1,5 @@
 from flask import flash, render_template, redirect, request, url_for, jsonify, session
-from sqlalchemy import and_
+from sqlalchemy import and_, func
 from sqlalchemy.exc import SQLAlchemyError
 from utilities import get_games, get_game_info, game_finder, \
     get_list, get_genres, get_themes, get_similar, get_platforms, get_filters, \
@@ -73,7 +73,6 @@ def debug():
 
 @main.route('/')
 def index():
-    print("Accessing root route. Is user authenticated? ", current_user.is_authenticated)
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
     return redirect((url_for('auth.login')))
@@ -90,16 +89,16 @@ def home():
     NOTES:
     in return, explain why the return of that game
     """
-    bag = session['bag']
-    unbag = session['unbag']
-    if len(bag) + len(unbag) < 5:
+    bag_count = db.session.query(func.count(Game)).filter(
+        and_(Game.user_id == current_user.id, Game.likes == True)).scalar()
+    if bag_count < 3:
         flash("First, we need to know which games you like or not.")
         return redirect(url_for('main.gameForm'))
-    bagGames = [g['game_id'] for g in bag]
-    unbagGames = [g['game_id'] for g in unbag]
-    top5 = get_recs(bagGames, unbagGames)
+    likes = db.session.query(Game.game_id).filter(and_(Game.user_id == current_user.id, Game.likes == True)).scalars()
+    dislikes = db.session.query(Game.game_id).filter(and_(Game.user_id == current_user.id, Game.likes == False)).scalars()
+    top5 = get_recs(likes, dislikes)
     top5 = sorted(top5, key=lambda g: g['rating'], reverse=True)
-    return render_template('home.html', title="iGame - Dashboard", top5=top5)
+    return render_template('home.html', title="iGame - Dashboard", bag_count=bag_count, top5=top5)
 
 
 @main.route('/gameForm', methods=['GET', 'POST'])
