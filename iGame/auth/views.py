@@ -140,4 +140,4 @@ def register():
 @auth.route('/get_users')
 def get_users():
     rq = db.session.query(User).all()
-    return rq
+    return render_template('t_.html',users=rq)
