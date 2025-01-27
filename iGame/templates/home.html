@@ -35,7 +35,7 @@
 {% block page_content %}
     <main role="main">
     <div class="container-sm p-3 align-self-center" style="color:#A8F788;background-color:#3B3B3B;">
-        <h1 class="display-6 mb-2">:dashboard: recs for {{ current_user.user_name }}</h1>
+        <h1 class="display-6 mb-2">:dashboard: recs for {{ current_user.id|string }}</h1>
         <!-- <p class="lead" style="color:#C694F7"><strong><em>based on games in your bag right now!</em></strong></p> -->
         <div class="container">
             <div class="row">
