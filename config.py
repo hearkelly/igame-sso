@@ -33,13 +33,14 @@ class ProductionConfig(Config):
 class HerokuConfig(ProductionConfig):
     SSL_REDIRECT = True if os.environ.get('DYNO') else False
     """
-    https://docs.pylonsproject.org/projects/waitress/en/latest/usage.html
+    HEROKU HEADERS: https://devcenter.heroku.com/articles/http-routing#heroku-headers
+    https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
     """
     @classmethod
     def init_app(cls, app):
         ProductionConfig.init_app(app)
 
-        # handle reverse proxy server headers
+        # handle Heroku reverse proxy headers
         try:
             from werkzeug.middleware.proxy_fix import ProxyFix
         except ImportError as e:
@@ -50,8 +51,6 @@ class HerokuConfig(ProductionConfig):
                                 x_host=1,
                                 x_port=1,
                                 x_prefix=0)
-
-        print(f"ProxyFix is applied: {isinstance(app.wsgi_app, ProxyFix)}")
 
         import logging
         from logging import StreamHandler

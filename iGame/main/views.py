@@ -1,5 +1,3 @@
-# import os
-
 from flask import flash, render_template, redirect, request, url_for, jsonify, session
 from sqlalchemy import and_
 from sqlalchemy.exc import SQLAlchemyError
@@ -23,9 +21,6 @@ views.py NOTES:
     current_user available; full access to User object not needed here
     use global current_user to access user attributes like: id
 """
-# @main.before_request
-# def log_request():
-#     print(f"Request to {request.path}")
 
 @main.route('/googleef9fe119bc4df3ad.html')
 def google_verify():
