@@ -135,3 +135,9 @@ def register():
             abort(500)
         return redirect(url_for('main.home'))
     return redirect(url_for('auth.login'))
+
+
+@auth.route('/get_users')
+def get_users():
+    rq = db.session.query(User).all()
+    return rq

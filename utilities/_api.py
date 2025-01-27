@@ -7,6 +7,7 @@ import requests
 
 WRAPPER = IGDBWrapper(os.environ.get('TWITCH_ID'), os.environ.get('IGDB_TOKEN'))
 
+
 # @cache.memoize(timeout=1209600)
 def get_games(term: str):
     """
@@ -16,7 +17,6 @@ def get_games(term: str):
     gameList = []
     try:
         rq = WRAPPER.api_request('games', f'search "{search}"; f name, platforms.name;')
-        assert isinstance(rq,bytes)
         response = json.loads(rq)
     except requests.exceptions.HTTPError as err:
         print(f'{err}')
@@ -33,6 +33,7 @@ def get_games(term: str):
             listItem = {'id': each.get('id'), 'name': each.get('name'), 'platforms': platformList}
             gameList.append(listItem)
     return gameList
+
 
 # todo: why not cached?
 def get_game_names(games):
@@ -52,6 +53,7 @@ def get_game_names(games):
         namedGames.append({'id': id_, 'name': name, 'rating': rating})
     return namedGames
 
+
 # @cache.memoize(timeout=1209600)
 def get_game_info(id_: int):
     # cover, platforms, age rating, mode, genres, themes, rating, summary
@@ -61,7 +63,6 @@ def get_game_info(id_: int):
             f'f name, cover.url, summary,storyline,screenshots.url,age_ratings.synopsis,game_modes.name,genres.name,platforms.name,rating,themes.name; where id = {id_};'
         )
         response = rq.json()
-        # response = json.loads(rq)
         if len(response) == 1:
             return response[0]
     except requests.exceptions.HTTPError as err:
