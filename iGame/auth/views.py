@@ -123,14 +123,18 @@ def register():
     return redirect(url_for('auth.login'))
 
 
-@auth.route('/_games/<_id>')
-def get_users(_id=0):
+@auth.route('/_games/')
+def get_users():
     # rq = db.session.query(Game.game_id, Game.rating).filter(
     #     and_(Game.user_id == _id, Game.likes == True)).all()
-    rq_scalars = db.session.execute(db.select(Game.game_id).where(Game.user_id == _id)).scalars()
-    print(list(rq_scalars))
+    # rq_scalars = db.session.execute(db.select(Game.game_id).where(Game.user_id == current_user.id)).scalars()
+    test_user = User('hearkelly@hotmail.com')
+    rq = db.session.add(test_user)
+    print(rq)
+    print(rq.scalar())
+    # print(list(rq_scalars))
     # bag_count = db.session.query(func.count(Game)).filter(
     #     and_(Game.user_id == _id, Game.likes == True)).scalar()
     # rq_scalars = db.session.query(Game.game_id, Game.rating).filter(
     #     and_(Game.user_id == _id, Game.likes == True)).scalars()
-    return render_template('t_.html', data=rq_scalars)
+    return render_template('t_.html', data=rq)

@@ -5,8 +5,8 @@
     <title>SQLAlchemy to Jinja Object Tester</title>
 </head>
 <body>
-{% for each in data %}
-{{ each }} :) :) :) :)
-{% endfor %}
+{% if data %}
+    {{ data }}
+{% endif %}
 </body>
 </html>
