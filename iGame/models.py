@@ -20,7 +20,12 @@ class User(UserMixin, db.Model):
 @login_manager.user_loader
 def load_user(user_id):
     # TODO: wrap this in a try/except bc its contacting db ???
-    return User.query.get(int(user_id))
+    # added "or None"
+    try:
+        user = db.session.get(User, user_id)
+    except:
+        user = None
+    return user
 
 
 # for the bag ('liked' games)

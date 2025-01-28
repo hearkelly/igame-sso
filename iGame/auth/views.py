@@ -1,7 +1,7 @@
 from flask import abort, flash, redirect, render_template, session, url_for, request
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import OperationalError, TimeoutError, DBAPIError
-from sqlalchemy import and_, func
+from sqlalchemy import and_, func, inspect
 from ..models import User, Game, db
 from ..main.forms import LoginForm
 from iGame import oauth
@@ -132,7 +132,7 @@ def get_users():
     db.session.add(test_user)
     db.session.commit()
 
-    print(test_user)
+    print(inspect(test_user))
     # print(list(rq_scalars))
     # bag_count = db.session.query(func.count(Game)).filter(
     #     and_(Game.user_id == _id, Game.likes == True)).scalar()
