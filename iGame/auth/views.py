@@ -136,7 +136,7 @@ def register():
 def get_users(_id=0):
     # rq = db.session.query(Game.game_id, Game.rating).filter(
     #     and_(Game.user_id == _id, Game.likes == True)).all()
-    rq_scalars = db.session.execute(db.select(func.count(Game))).scalars()
+    rq_scalars = db.session.execute(db.select(func.count(Game.game_id))).scalar_one()
     print(rq_scalars)
     # bag_count = db.session.query(func.count(Game)).filter(
     #     and_(Game.user_id == _id, Game.likes == True)).scalar()
