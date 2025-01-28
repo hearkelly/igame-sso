@@ -131,7 +131,6 @@ def get_users():
     test_user = User('hearkelly@hotmail.com')
     rq = db.session.add(test_user)
     print(rq)
-    print(rq.scalar())
     # print(list(rq_scalars))
     # bag_count = db.session.query(func.count(Game)).filter(
     #     and_(Game.user_id == _id, Game.likes == True)).scalar()
