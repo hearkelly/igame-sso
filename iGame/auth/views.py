@@ -51,9 +51,8 @@ def login():
         redirect_uri = url_for('auth._auth', _external=True)
         if form.github.data:
             return redirect(redirect_uri)  # TODO: configure github sso
-        else:
+        elif form.google.data:
             return oauth.google.authorize_redirect(redirect_uri)
-
     return render_template('index.html', form=form)
 
 
@@ -77,11 +76,6 @@ def _auth():
         try:
             user = db.session.query(User).filter(User.email_hash == email_hash).first()
             login_user(user, remember=session.get('set_remember') or False)
-            session['bag'] = [g.to_dict() for g in db.session.query(Game).filter(and_(Game.user_id == current_user.id),
-                                                                                 Game.likes == True).all()]
-            session['unbag'] = [g.to_dict() for g in
-                                db.session.query(Game).filter(and_(Game.user_id == current_user.id),
-                                                              Game.likes == False).all()]
             return redirect(url_for('main.home'))
         except (OperationalError, TimeoutError, DBAPIError) as e:
             flash(f"{e}", category='connection error')
@@ -101,9 +95,6 @@ def _auth():
 def logout():
     logout_user()
     return redirect((url_for('main.index')))
-
-
-# TODO: work on main.index splash
 
 
 @auth.route('/register', methods=['GET', 'POST'])
@@ -136,10 +127,10 @@ def register():
 def get_users(_id=0):
     # rq = db.session.query(Game.game_id, Game.rating).filter(
     #     and_(Game.user_id == _id, Game.likes == True)).all()
-    rq_scalars = db.session.execute(db.select(func.count(Game.game_id))).scalar_one()
+    rq_scalars = db.session.execute(db.select(Game.game_id).where(Game.user_id == _id)).scalars()
     print(rq_scalars)
     # bag_count = db.session.query(func.count(Game)).filter(
     #     and_(Game.user_id == _id, Game.likes == True)).scalar()
     # rq_scalars = db.session.query(Game.game_id, Game.rating).filter(
     #     and_(Game.user_id == _id, Game.likes == True)).scalars()
-    return render_template('t_.html',data=rq_scalars)
+    return render_template('t_.html', data=rq_scalars)
