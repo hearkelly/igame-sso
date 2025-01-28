@@ -142,4 +142,4 @@ def get_users(_id=0):
     #     and_(Game.user_id == _id, Game.likes == True)).scalar()
     # rq_scalars = db.session.query(Game.game_id, Game.rating).filter(
     #     and_(Game.user_id == _id, Game.likes == True)).scalars()
-    return render_template('t_.html',data=[game_id for game_id in rq_scalars])
+    return render_template('t_.html',data=rq_scalars)
