@@ -132,7 +132,7 @@ def get_users():
     db.session.add(test_user)
     db.session.commit()
 
-    print(inspect(test_user))
+    print(inspect(test_user).persistent)
     # print(list(rq_scalars))
     # bag_count = db.session.query(func.count(Game)).filter(
     #     and_(Game.user_id == _id, Game.likes == True)).scalar()
