@@ -68,6 +68,7 @@ def home():
     in return, explain why the return of that game
     """
     bag_count = count_likes(current_user.id)
+    print(bag_count)
     if bag_count < 3:
         flash("First, we need to know which games you like or not. We require three liked games.")
         return redirect(url_for('main.start'))
