@@ -45,7 +45,7 @@ def delete_game(user_id: int, game_id: int) -> tuple:
 def count_likes(user_id: int) -> int:
     try:
         result = db.session.execute(
-            db.select(func.count(Game)).where(Game.user_id == user_id).where(Game.likes == True)).scalar()
+            db.select(func.count(Game.game_id)).where(Game.user_id == user_id).where(Game.likes == True)).scalar()
         if isinstance(result,int):
             return result
     except SQLAlchemyError as error:
