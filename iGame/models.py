@@ -19,8 +19,6 @@ class User(UserMixin, db.Model):
 
 @login_manager.user_loader
 def load_user(user_id):
-    # TODO: wrap this in a try/except bc its contacting db ???
-    # added "or None"
     try:
         user = db.session.get(User, user_id)
     except:

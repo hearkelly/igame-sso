@@ -1,13 +1,13 @@
 from flask import flash, render_template, redirect, request, url_for, jsonify, session
 from sqlalchemy import and_, func
-from sqlalchemy.exc import SQLAlchemyError
-from utilities import get_games, get_game_info, game_finder, \
+from utilities import add_game, count_likes, delete_game, get_games, get_game_info, game_finder, \
     get_list, get_genres, get_themes, get_similar, get_platforms, get_filters, \
     get_game_names
 from . import main
 from .forms import GameForm, RatingForm, GameSelections
 from ..models import Game, db
 from flask_login import login_required, current_user
+
 # from iGame import cache
 
 
@@ -22,45 +22,27 @@ views.py NOTES:
     use global current_user to access user attributes like: id
 """
 
-@main.route('/googleef9fe119bc4df3ad.html')
-def google_verify():
-    return render_template("googleef9fe119bc4df3ad.html")
 
-@main.route('/add/<gameID>')
+@main.route('/add/<game_id>')
 @login_required
-def add(gameID):
-    new = Game(current_user.id, gameID, True)
-    try:
-        db.session.add(new)
-        db.session.commit()
-        session['bag'].append(new.to_dict())
-        flash('Game added to bag!')
-    except SQLAlchemyError as error:
-        print(error)
-    # session['bag'] = [g.to_dict() for g in
-    #                   db.session.query(Game).filter(and_(Game.user_id == current_user.id, Game.likes == True)).all()]
-    # session['unbag'] = [g.to_dict() for g in
-    #                     db.session.query(Game).filter(and_(Game.user_id == current_user.id, Game.likes == False)).all()]
+def add(game_id):
+    if not isinstance(game_id,int) or not (1 <= game_id <= 340000):
+        return 400
+    added, message = add_game(current_user.id, game_id)
+    if added:
+        flash(message)
     return redirect(url_for('main.bag'))
 
 
-@main.route('/delete/<gameID>')
+@main.route('/delete/<game_id>')
 @login_required
-def delete(gameID):
-    item = db.session.query(Game).filter(
-        and_(Game.user_id == current_user.id, Game.game_id == gameID)).first()
-    if item:
-        try:
-            db.session.delete(item)
-            db.session.commit()
-            flash('Game removed from bag!')
-        except SQLAlchemyError as error:
-            print(error)
-    else:
-        flash('Game not found.')
-    session['bag'] = [g.to_dict() for g in
-                      db.session.query(Game).filter(and_(Game.user_id == current_user.id, Game.likes == True)).all()]
+def delete(game_id):
+    if not isinstance(game_id,int) or not (1 <= game_id <= 340000):
+        return 400
+    deleted, message = delete_game(current_user.id, game_id)
+    flash(message)
     return redirect(url_for('main.bag'))
+
 
 @main.route("/debug")
 def debug():
@@ -78,10 +60,6 @@ def index():
     return redirect((url_for('auth.login')))
 
 
-
-
-
-
 @main.route('/home', methods=['GET'])
 @login_required
 def home():
@@ -89,22 +67,22 @@ def home():
     NOTES:
     in return, explain why the return of that game
     """
-    bag_count = db.session.query(func.count(Game)).filter(
-        and_(Game.user_id == current_user.id, Game.likes == True)).scalar()
+    bag_count = count_likes(current_user.id)
     if bag_count < 3:
-        flash("First, we need to know which games you like or not.")
-        return redirect(url_for('main.gameForm'))
+        flash("First, we need to know which games you like or not. We require three liked games.")
+        return redirect(url_for('main.start'))
     likes = db.session.query(Game.game_id).filter(and_(Game.user_id == current_user.id, Game.likes == True)).scalars()
-    dislikes = db.session.query(Game.game_id).filter(and_(Game.user_id == current_user.id, Game.likes == False)).scalars()
+    dislikes = db.session.query(Game.game_id).filter(
+        and_(Game.user_id == current_user.id, Game.likes == False)).scalars()
     top5 = get_recs(likes, dislikes)
     top5 = sorted(top5, key=lambda g: g['rating'], reverse=True)
     return render_template('home.html', title="iGame - Dashboard", bag_count=bag_count, top5=top5)
 
 
-@main.route('/gameForm', methods=['GET', 'POST'])
+@main.route('/start', methods=['GET', 'POST'])
 @login_required
 # @cache.cached()
-def gameForm():
+def start():
     """
     to collect 5 games: 3 likes, 2 dislikes
     """
@@ -185,7 +163,7 @@ def bag():
         return render_template('bag.html', games=[], form=form)
     named = get_game_names(items)
     sortedBag = sorted(named, key=lambda g: str(g['name']))
-    return render_template('bag.html', games=sortedBag, form=form)
+    return render_template('bag.html', games=sortedBag, form=form, bag_count=len(items))
 
 
 @main.route('/gameFinder/<id_>')
@@ -288,7 +266,7 @@ def get_recs(bagGames, unbagGames):
         similar = list(get_similar(bagGames) - set(bagGames))
     except ValueError:
         flash('There seem to be no games in your bag.')  # this should not happen
-        return redirect(url_for('main.gameForm'))
+        return redirect(url_for('main.start'))
 
     # get the platforms for all the games the user has played
     allGames = bagGames + unbagGames
@@ -300,3 +278,8 @@ def get_recs(bagGames, unbagGames):
         loRecs, similar = get_list(similar, platforms, loGenre, noGenre, loTheme, noTheme)
         hiRecs += loRecs
     return hiRecs[:5]
+
+
+@main.route('/googleef9fe119bc4df3ad.html')
+def google_verify():
+    return render_template("googleef9fe119bc4df3ad.html")

@@ -2,6 +2,8 @@ import os
 import requests
 
 """
+note : EXPLICITLY CLOSE DB CONNECTIONS IF USING SQLALCHEMY OUTSIDE OF A FLASK APP CONTEXT
+
 IGDB API calls authorize requests using tokens generated from twitch oauth.
 updates.py:
     - runs each hour

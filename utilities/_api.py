@@ -37,6 +37,10 @@ def get_games(term: str):
 
 # todo: why not cached?
 def get_game_names(games):
+    """
+    GAME SEARCH:
+    1. Run as string, split words too -- TODO?
+    """
     ids_ = [o[0] for o in games]
     if len(ids_) > 1:
         ids_ = tuple(ids_)
