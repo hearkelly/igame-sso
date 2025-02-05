@@ -51,7 +51,8 @@ def debug():
     likes, dislikes = [], []
     if user_bag:
         for each in user_bag:
-            print(each)
+            print(each['likes'])
+    return user_bag
 
 
 @main.route('/')
