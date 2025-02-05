@@ -1,6 +1,6 @@
 from flask import flash, render_template, redirect, request, url_for, jsonify, session
 from sqlalchemy import and_, func
-from utilities import add_game, count_likes, delete_game, get_games, get_game_info, game_finder, \
+from utilities import add_game, count_likes, delete_game, get_likes,get_games, get_game_info, game_finder, \
     get_list, get_genres, get_themes, get_similar, get_platforms, get_filters, \
     get_game_names
 from . import main
@@ -45,12 +45,14 @@ def delete(game_id):
 
 
 @main.route("/debug")
+@login_required
 def debug():
-    return {
-        "X-Forwarded-Proto": request.headers.get("X-Forwarded-Proto"),
-        "is_secure": request.is_secure,
-        "url_scheme": request.url
-    }
+    bag_games = get_likes(current_user.id)
+    print(bag_games)
+    print(type(bag_games))
+    for each in bag_games:
+        print(type(each), each)
+    return 200
 
 
 @main.route('/')
@@ -68,7 +70,10 @@ def home():
     in return, explain why the return of that game
     """
     bag_count = count_likes(current_user.id)
-    print(bag_count)
+    bag_games = get_likes(current_user.id)
+    """
+    should we get all the games in the bag in the first go ? 
+    """
     if bag_count < 3:
         flash("First, we need to know which games you like or not. We require three liked games.")
         return redirect(url_for('main.start'))

@@ -46,12 +46,18 @@ def count_likes(user_id: int) -> int:
     try:
         result = db.session.execute(
             db.select(func.count(Game.game_id)).where(Game.user_id == user_id).where(Game.likes == True)).scalar()
-        if isinstance(result,int):
-            return result
+        return result if isinstance(result, int) else -1
     except SQLAlchemyError as error:
         print(error)
         return -1
     except Exception as error:
         print(error)
         return -1
-    return -1
+
+def get_likes(user_id: int) -> list:
+    try:
+        result = db.session.execute(
+            db.select(Game).where(Game.user_id == user_id).where(Game.likes == True)).scalars()
+        print(result)
+    except:
+        pass
