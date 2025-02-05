@@ -52,7 +52,7 @@ def debug():
     print(type(bag_games))
     for each in bag_games:
         print(type(each), each)
-    return 200
+    return None
 
 
 @main.route('/')
