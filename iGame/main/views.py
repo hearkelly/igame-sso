@@ -1,6 +1,6 @@
 from flask import flash, render_template, redirect, request, url_for, jsonify, session
 from sqlalchemy import and_, func
-from utilities import add_game, count_likes, delete_game, get_likes,get_games, get_game_info, game_finder, \
+from utilities import add_game, count_likes, delete_game, get_bag,get_likes,get_games, get_game_info, game_finder, \
     get_list, get_genres, get_themes, get_similar, get_platforms, get_filters, \
     get_game_names
 from . import main
@@ -44,15 +44,15 @@ def delete(game_id):
     return redirect(url_for('main.bag'))
 
 
-@main.route("/debug")
-@login_required
-def debug():
-    bag_games = get_likes(current_user.id)
-    print(bag_games)
-    print(type(bag_games))
-    for each in bag_games:
-        print(type(each), each)
-    return None
+# @main.route("/debug")
+# @login_required
+# def debug():
+#     bag_games = get_likes(current_user.id)
+#     print(bag_games)
+#     print(type(bag_games))
+#     for each in bag_games:
+#         print(type(each), each)
+#     return bag_games
 
 
 @main.route('/')
@@ -67,19 +67,27 @@ def index():
 def home():
     """
     NOTES:
+        - Game objects have game id:int, user id:int, and pref type:bool
+
     in return, explain why the return of that game
+
+    Generates game recommendations based on liked and disliked games in a user's bag.
     """
     bag_count = count_likes(current_user.id)
     bag_games = get_likes(current_user.id)
-    """
-    should we get all the games in the bag in the first go ? 
-    """
+    bag_count = len(bag_games)
+
     if bag_count < 3:
-        flash("First, we need to know which games you like or not. We require three liked games.")
+        flash("First, we need to know which games you like or not. Our algorithm requires at least three liked games.")
         return redirect(url_for('main.start'))
-    likes = db.session.query(Game.game_id).filter(and_(Game.user_id == current_user.id, Game.likes == True)).scalars()
-    dislikes = db.session.query(Game.game_id).filter(
-        and_(Game.user_id == current_user.id, Game.likes == False)).scalars()
+
+    user_bag = get_bag(current_user.id)
+    likes, dislikes = [], []
+    if user_bag:
+        for each in user_bag:
+            print(each)
+            
+    # WHAT DOES THE GET_RECS() need ? Just game id ?
     top5 = get_recs(likes, dislikes)
     top5 = sorted(top5, key=lambda g: g['rating'], reverse=True)
     return render_template('home.html', title="iGame - Dashboard", bag_count=bag_count, top5=top5)
@@ -162,11 +170,10 @@ def bag():
     """
     let's return a list of {} with keys for gameID, gameName, gameRating
     """
-    form = RatingForm()
-    items = db.session.query(Game.game_id, Game.rating).filter(
-        and_(Game.user_id == current_user.id, Game.likes == True)).all()
+    items = get_bag(current_user.id)
     if not items:
-        return render_template('bag.html', games=[], form=form)
+        return render_template('bag.html', games=[])
+    form = RatingForm()
     named = get_game_names(items)
     sortedBag = sorted(named, key=lambda g: str(g['name']))
     return render_template('bag.html', games=sortedBag, form=form, bag_count=len(items))
