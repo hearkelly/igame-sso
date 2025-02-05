@@ -58,6 +58,6 @@ def get_likes(user_id: int) -> list:
     try:
         result = db.session.execute(
             db.select(Game).where(Game.user_id == user_id).where(Game.likes == True)).scalars()
-        print(result)
+        return result
     except:
         pass
