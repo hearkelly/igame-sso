@@ -44,15 +44,14 @@ def delete(game_id):
     return redirect(url_for('main.bag'))
 
 
-# @main.route("/debug")
-# @login_required
-# def debug():
-#     bag_games = get_likes(current_user.id)
-#     print(bag_games)
-#     print(type(bag_games))
-#     for each in bag_games:
-#         print(type(each), each)
-#     return bag_games
+@main.route("/debug")
+@login_required
+def debug():
+    user_bag = get_bag(current_user.id)
+    likes, dislikes = [], []
+    if user_bag:
+        for each in user_bag:
+            print(each)
 
 
 @main.route('/')
@@ -86,7 +85,7 @@ def home():
     if user_bag:
         for each in user_bag:
             print(each)
-            
+
     # WHAT DOES THE GET_RECS() need ? Just game id ?
     top5 = get_recs(likes, dislikes)
     top5 = sorted(top5, key=lambda g: g['rating'], reverse=True)
