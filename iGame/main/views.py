@@ -51,7 +51,7 @@ def debug():
     likes, dislikes = [], []
     if user_bag:
         for each in user_bag:
-            print(each['likes'])
+            print(each.likes)
     return user_bag
 
 
