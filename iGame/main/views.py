@@ -44,15 +44,15 @@ def delete(game_id):
     return redirect(url_for('main.bag'))
 
 
-@main.route("/debug")
-@login_required
-def debug():
-    user_bag = get_bag(current_user.id)
-    likes, dislikes = [], []
-    if user_bag:
-        for each in user_bag:
-            print(each.likes)
-    return user_bag
+# @main.route("/debug")
+# @login_required
+# def debug():
+#     user_bag = get_bag(current_user.id)
+#     likes, dislikes = [], []
+#     if user_bag:
+#         for each in user_bag:
+#             print(each.likes)
+#     return user_bag
 
 
 @main.route('/')
@@ -62,7 +62,7 @@ def index():
     return redirect((url_for('auth.login')))
 
 
-@main.route('/home', methods=['GET'])
+@main.route('/selects', methods=['GET'])
 @login_required
 def home():
     """
@@ -74,20 +74,23 @@ def home():
     Generates game recommendations based on liked and disliked games in a user's bag.
     """
     bag_count = count_likes(current_user.id)
-    bag_games = get_likes(current_user.id)
-    bag_count = len(bag_games)
+
 
     if bag_count < 3:
-        flash("First, we need to know which games you like or not. Our algorithm requires at least three liked games.")
+        flash("1ST ... at least three liked games!")
         return redirect(url_for('main.start'))
 
     user_bag = get_bag(current_user.id)
     likes, dislikes = [], []
     if user_bag:
         for each in user_bag:
-            print(each)
+            if each.likes:
+                likes.append(each)
+            else:
+                dislikes.append(each)
 
     # WHAT DOES THE GET_RECS() need ? Just game id ?
+    # don't send empty DISLIKES list to top5 ?
     top5 = get_recs(likes, dislikes)
     top5 = sorted(top5, key=lambda g: g['rating'], reverse=True)
     return render_template('home.html', title="iGame - Dashboard", bag_count=bag_count, top5=top5)
@@ -100,8 +103,8 @@ def start():
     """
     to collect 5 games: 3 likes, 2 dislikes
     """
-    if len(session['bag']) + len(session['unbag']) >= 5:
-        return redirect(url_for('main.home'))
+    # if len(session['bag']) + len(session['unbag']) >= 5:
+    #     return redirect(url_for('main.home'))
     form = GameForm()
     choices = {}
     if form.validate_on_submit():
@@ -116,14 +119,24 @@ def start():
                 return render_template('gameform1.html', form=form, title='iGame - Game Preferences')
         if len(choices) == 5:
             session['options'] = choices
-        return redirect(url_for('main.gameForm2'))
+        return redirect(url_for('main.confirm_start'))
     return render_template('gameform1.html', form=form, title='iGame - Game Preferences')
 
 
 @main.route('/gameForm2', methods=['GET', 'POST'])
 @login_required
 # @cache.cached()
-def gameForm2():
+def confirm_start():
+    """
+    ALLOWS users to preview their preferences and platforms.
+    This basically will help confirm searches from game_form.
+    I guess my question to answer is, what games from the searches do we include in their bag initially?
+    I think if there was an exact match, we add it to the bag.
+    Otherwise we glean details from related games / confirmed platforms.
+
+    Add a "START OVER" to return to (main.start)
+
+    """
     form = GameSelections()
     games = session.get('options')
     form.game1sel.choices = [(g['id'], g['name'] + "on" + str(g['platforms'])) for g in games.get('game1')]
