@@ -26,13 +26,13 @@ class Base(DeclarativeBase):
 db = SQLAlchemy(model_class=Base)
 
 # changed to score to separate from IGDB "ratings" attribute
-user_games = db.Table(
-    'user_games',
-    Column('user_id',db.ForeignKey('users.user_id'), primary_key=True),
-    Column('game_id',db.ForeignKey('games.game_id'), primary_key=True),
-    Column('likes', db.Boolean, nullable=False),
-    Column('score', db.Integer, nullable=True)
-)
+# user_games = db.Table(
+#     'user_games',
+#     Column('user_id',db.ForeignKey('users.user_id'), primary_key=True),
+#     Column('game_id',db.ForeignKey('games.game_id'), primary_key=True),
+#     Column('likes', db.Boolean, nullable=False),
+#     Column('score', db.Integer, nullable=True)
+# )
 
 
 class User(UserMixin, db.Model):
@@ -41,7 +41,7 @@ class User(UserMixin, db.Model):
     email_hash: Mapped[str] = mapped_column(db.String(32), nullable=False, default='')  # set:unique?
     created_on: Mapped[datetime] = mapped_column(db.DateTime(), default=datetime.now)
 
-    games: Mapped[list['Game']] = db.relationship(secondary=user_games, back_populates='users')
+    # games: Mapped[list['Game']] = db.relationship(secondary=user_games, back_populates='users')
 
     def __init__(self, email):
         self.email_hash = email
@@ -65,7 +65,7 @@ class Game(db.Model, SerializerMixin):
     game_id: Mapped[int] = mapped_column(db.Integer, primary_key=True, nullable=False)  # what are defaults here?
     title: Mapped[str] = mapped_column(db.String, nullable=False)  # need to index
 
-    users: Mapped[list['User']] = db.relationship(secondary=user_games, back_populates='games')
+    # users: Mapped[list['User']] = db.relationship(secondary=user_games, back_populates='games')
 
     def __init__(self, game_id, title):
         self.game_id = game_id
