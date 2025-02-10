@@ -2,7 +2,7 @@ from datetime import datetime
 from sqlalchemy_serializer import SerializerMixin
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-from sqlalchemy import Column, Table, ForeignKey, Integer, MetaData
+from sqlalchemy import Column, Table, ForeignKey, Integer, MetaData, Sequence
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from . import login_manager
 
@@ -23,7 +23,7 @@ class Base(DeclarativeBase):
     })
 
 
-db = SQLAlchemy(model_class=Base)
+db = SQLAlchemy(model_class=Base, metadata=Base.metadata)
 
 #  changed to score to separate from IGDB "ratings" attribute
 user_games = db.Table(
@@ -37,7 +37,7 @@ user_games = db.Table(
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
-    user_id: Mapped[int] = mapped_column(db.Integer, primary_key=True, autoincrement=True,nullable=False)
+    user_id: Mapped[int] = mapped_column(db.Integer, Sequence('user_id_seq'), primary_key=True,nullable=False)
     email_hash: Mapped[str] = mapped_column(db.String(32), nullable=False, default='')  # set:unique?
     created_on: Mapped[datetime] = mapped_column(db.DateTime(), default=datetime.now)
 
