@@ -8,7 +8,7 @@ from . import login_manager
 
 
 # association table created with Core, models created with ORM
-
+# heroku pg:psql postgresql-clean-58005 --app i-game-container1 (HEROKU CLI)
 
 class Base(DeclarativeBase):
     """
@@ -37,7 +37,7 @@ user_games = db.Table(
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
-    user_id: Mapped[int] = mapped_column(db.Integer, primary_key=True, nullable=False)
+    user_id: Mapped[int] = mapped_column(db.Integer, primary_key=True, autoincrement=True,nullable=False)
     email_hash: Mapped[str] = mapped_column(db.String(32), nullable=False, default='')  # set:unique?
     created_on: Mapped[datetime] = mapped_column(db.DateTime(), default=datetime.now)
 
