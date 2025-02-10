@@ -2,7 +2,7 @@ from datetime import datetime
 from sqlalchemy_serializer import SerializerMixin
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-from sqlalchemy import Column, Table, ForeignKey, Integer, MetaData, Sequence
+from sqlalchemy import Column, Table, ForeignKey, Integer, MetaData
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from . import login_manager
 
@@ -28,8 +28,8 @@ db = SQLAlchemy(model_class=Base, metadata=Base.metadata)
 #  changed to score to separate from IGDB "ratings" attribute
 user_games = db.Table(
     'user_games',
-    Column('user_id',db.ForeignKey('users.user_id'), primary_key=True),
-    Column('game_id',db.ForeignKey('games.game_id'), primary_key=True),
+    Column('user_id',db.ForeignKey('users.id'), primary_key=True),
+    Column('game_id',db.ForeignKey('games.id'), primary_key=True),
     Column('likes', db.Boolean, nullable=False),
     Column('score', db.Integer, nullable=True)
 )
@@ -37,11 +37,11 @@ user_games = db.Table(
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
-    user_id: Mapped[int] = mapped_column(db.Integer, Sequence('user_id_seq'), primary_key=True,nullable=False)
+    id: Mapped[int] = mapped_column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     email_hash: Mapped[str] = mapped_column(db.String(32), nullable=False, default='')  # set:unique?
     created_on: Mapped[datetime] = mapped_column(db.DateTime(), default=datetime.now)
 
-    # games: Mapped[list['Game']] = db.relationship(secondary=user_games, back_populates='users')
+    games: Mapped[list['Game']] = db.relationship(secondary=user_games, back_populates='users')
 
     def __init__(self, email):
         self.email_hash = email
@@ -62,13 +62,13 @@ def load_user(user_id):
 class Game(db.Model, SerializerMixin):
     """a table where USERID and GAMEID act as the primary key"""
     __tablename__ = 'games'
-    game_id: Mapped[int] = mapped_column(db.Integer, primary_key=True, nullable=False)  # what are defaults here?
+    id: Mapped[int] = mapped_column(db.Integer, primary_key=True, autoincrement=False, nullable=False )  # what are defaults here?
     title: Mapped[str] = mapped_column(db.String, nullable=False)  # need to index
 
-    # users: Mapped[list['User']] = db.relationship(secondary=user_games, back_populates='games')
+    users: Mapped[list['User']] = db.relationship(secondary=user_games, back_populates='games')
 
     def __init__(self, game_id, title):
-        self.game_id = game_id
+        self.id = game_id
         self.title = title
 
     def __repr__(self):
