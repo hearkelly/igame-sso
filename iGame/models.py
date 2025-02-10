@@ -25,14 +25,14 @@ class Base(DeclarativeBase):
 
 db = SQLAlchemy(model_class=Base)
 
-# changed to score to separate from IGDB "ratings" attribute
-# user_games = db.Table(
-#     'user_games',
-#     Column('user_id',db.ForeignKey('users.user_id'), primary_key=True),
-#     Column('game_id',db.ForeignKey('games.game_id'), primary_key=True),
-#     Column('likes', db.Boolean, nullable=False),
-#     Column('score', db.Integer, nullable=True)
-# )
+#  changed to score to separate from IGDB "ratings" attribute
+user_games = db.Table(
+    'user_games',
+    Column('user_id',db.ForeignKey('users.user_id'), primary_key=True),
+    Column('game_id',db.ForeignKey('games.game_id'), primary_key=True),
+    Column('likes', db.Boolean, nullable=False),
+    Column('score', db.Integer, nullable=True)
+)
 
 
 class User(UserMixin, db.Model):
