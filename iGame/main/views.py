@@ -50,8 +50,8 @@ def debug():
     # send user id int to db utils
     # db utils returns list of game objects in bag
     _bag = get_bag(current_user.id)
-    pass
-
+    print(_bag)
+    return _bag
 
 
 
