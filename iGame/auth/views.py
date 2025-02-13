@@ -78,7 +78,8 @@ def _auth():
             login_user(user, remember=session.get('set_remember') or False)
             return redirect(url_for('main.home'))
         except (OperationalError, TimeoutError, DBAPIError) as e:
-            flash(f"{e}", category='connection error')
+            print(e)
+            flash('Database connection error.', category='error')
             return render_template('404.html')
             # TODO: create route/views/error handlers for 404,500
         except Exception as e:
