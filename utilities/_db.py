@@ -65,9 +65,11 @@ def get_likes(user_id: int) -> list:
 
 
 def get_bag(user_id: int) -> list:
-    try:
-        r = db.session.execute(db.select(Game).where(Game.user_id == user_id)).scalars()
-        return list(r) if r is not None else []
-    except (SQLAlchemyError, Exception) as error:
-        print(error)
-        return []
+    user = User(user_id)
+    return user.games
+#     try:
+#         r = db.session.execute(db.select(Game).where(Game.user_id == user_id)).scalars()
+#         return list(r) if r is not None else []
+#     except (SQLAlchemyError, Exception) as error:
+#         print(error)
+#         return []

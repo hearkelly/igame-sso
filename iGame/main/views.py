@@ -44,15 +44,15 @@ def delete(game_id):
     return redirect(url_for('main.bag'))
 
 
-# @main.route("/debug")
-# @login_required
-# def debug():
-#     user_bag = get_bag(current_user.id)
-#     likes, dislikes = [], []
-#     if user_bag:
-#         for each in user_bag:
-#             print(each.likes)
-#     return user_bag
+@main.route("/debug")
+@login_required
+def debug():
+    # send user id int to db utils
+    # db utils returns list of game objects in bag
+    _bag = None
+    pass
+
+
 
 
 @main.route('/')
@@ -123,7 +123,7 @@ def start():
     return render_template('gameform1.html', form=form, title='iGame - Game Preferences')
 
 
-@main.route('/gameForm2', methods=['GET', 'POST'])
+@main.route('/confirm', methods=['GET', 'POST'])
 @login_required
 # @cache.cached()
 def confirm_start():
